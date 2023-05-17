@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="myDiv"></div>
+    <script>
+        var trace1 = {
+            x: ['IMD Score', 'Income Score', 'Employment Score'],
+            y: [9.981, 21, 20],
+            type: 'bar',
+            name: 'E01032685',
+            marker: {
+                color: 'rgb(249, 245, 75)',
+                opacity: 0.7,
+            }
+        };
+
+        var trace2 = {
+            x: ['IMD Score', 'Income Score', 'Employment Score'],
+            y: [13.948, 30, 24],
+            type: 'bar',
+            name: 'E01032686',
+            marker: {
+                color: 'rgb(139, 245, 250)',
+                opacity: 0.5
+            }
+        };
+        var trace3 = {
+            x: ['IMD Score', 'Income Score', 'Employment Score'],
+            y: [21.035, 121, 93],
+            type: 'bar',
+            name: 'E01032914',
+            marker: {
+                color: 'rgb(32, 94, 97)',
+                opacity: 0.5
+            }
+        };
+
+        var data = [trace1, trace2,trace3];
+
+        var layout = {
+            title: '2015 Media City Deprivation',
+            xaxis: {
+                tickangle: -45
+            },
+            barmode: 'group'
+        };
+
+        Plotly.newPlot('myDiv', data, layout);
+    </script>
+</body>
+</html>

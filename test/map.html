@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+
+    <style>
+        *, *:before, *:after {
+	 -moz-box-sizing: border-box;
+	 -webkit-box-sizing: border-box;
+	 box-sizing: border-box;
+}
+ html {
+	 margin: 0;
+	 height: 100%;
+	 width: 100%;
+}
+ body {
+	 margin: 0;
+	 height: 100%;
+	 width: 100%;
+}
+ body::before {
+	 content: "";
+	 position: absolute;
+	 top: 0;
+	 right: 0;
+	 bottom: 0;
+	 left: 0;
+	 z-index: -1;
+	 background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/44720/paris.jpg") center center no-repeat fixed;
+	 -webkit-background-size: cover;
+	 -moz-background-size: cover;
+	 -o-background-size: cover;
+	 background-size: cover;
+	 box-shadow: inset 0 0 240px rgba(0, 0, 0, 1);
+}
+ #container {
+	 display: block;
+	 position: absolute;
+	 top: 40px;
+	 right: 40px;
+	 bottom: 40px;
+	 left: 40px;
+}
+ #map-canvas, #map-inner {
+	 display: block;
+	 background: #000;
+	 position: absolute;
+	 top: 0;
+	 right: 0;
+	 bottom: 0;
+	 left: 0;
+	 z-index: 0;
+}
+ #map-inner {
+	 z-index: 100;
+	 background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(30, 87, 153, 1)), color-stop(100%, rgba(30, 87, 153, 0)));
+	 background: -webkit-linear-gradient(left, rgba(30, 87, 153, 1) 0%, rgba(30, 87, 153, 0) 100%);
+	 background: -moz-linear-gradient(left, rgba(30, 87, 153, 1) 0%, rgba(30, 87, 153, 0) 100%);
+	 background: -o-linear-gradient(left, rgba(30, 87, 153, 1) 0%, rgba(30, 87, 153, 0) 100%);
+	 background: -ms-linear-gradient(left, rgba(30, 87, 153, 1) 0%, rgba(30, 87, 153, 0) 100%);
+	 background: linear-gradient(to right, rgba(30, 87, 153, 1) 0%, rgba(30, 87, 153, 0) 100%);
+	 padding: 30px;
+	 font-family: "Open Sans", sans-serif;
+	 color: #fff;
+	 border: 5px solid white;
+	 padding-right: 50%;
+}
+ #map-inner::before {
+	 z-index: -50;
+	 display: block;
+	 position: absolute;
+	 top: 0;
+	 right: 0;
+	 bottom: 0;
+	 left: 0;
+	 content: "";
+	 background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/44720/france.png");
+	 background-repeat: no-repeat;
+}
+ #map-inner .overflow {
+	 display: block;
+	 overflow: hidden;
+	 max-height: 100%;
+	 overflow-y: scroll;
+}
+ #map-inner h1 {
+	 margin-top: 0;
+}
+ #map-inner h1, #map-inner p {
+	 text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+}
+ 
+    </style>
+</head>
+
+<body>
+    <div id='container'>
+        <div id='map-canvas'></div>
+        <div id='map-inner'>
+          <div class='overflow'>
+            <h1>
+              Paris, France
+            </h1>
+            <p>
+              Paris is the capital and most populous city of France. It is situated on the Seine River, in the north of the country, at the heart of the Île-de-France region.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+    <script>
+        // if #map-canvas is found
+if (document.getElementById('map-canvas')){
+ 
+ // Coordinates (Off Center)
+ var myLatlng = new google.maps.LatLng(48.8566140,2.1000000);
+
+ // Other options for the map, pretty much selfexplanatory
+ var mapOptions = {
+   zoom: 10,
+   zoomControl: true,
+   zoomControlOptions: {
+     style: google.maps.ZoomControlStyle.SMALL
+   },
+   center: myLatlng,
+   mapTypeId: google.maps.MapTypeId.ROADMAP,
+   mapTypeControl: !1,
+   styles: [
+     {
+       "stylers": [
+         { "saturation": -100 }
+       ] 
+     },{
+       "elementType": "labels.icon",
+       "stylers": [
+         { "visibility": "off" }
+       ]
+     }
+   ]
+ };
+
+ // Attach a map to the DOM Element, with the defined settings
+ var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+ 
+ // Map Marker
+ map = new google.maps.Map(document.getElementById('map-canvas'),mapOptions);
+
+ var marker = new google.maps.Marker({
+   position: new google.maps.LatLng(48.8566140,2.3522219),
+   // Below is position of marker at the center of the map
+   // position: new google.maps.LatLng(48.8566140,2.1000019), 
+   animation: google.maps.Animation.DROP,
+   map: map
+ });
+
+}
+    </script>
+</body>
+</html>

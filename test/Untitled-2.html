@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        	/* 设置全局盒模型和默认样式 */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: #eee;
+	padding: 1rem;
+	color: #1d1d20;
+	line-height: 1.5em;
+}
+
+/* 设置超链接样式 */
+body a {
+	color: #8dbeef;
+	font-style: italic;
+	font-weight: 600;
+	transition: all 0.3s ease-out;
+}
+
+body a:visited {
+	color: #c9e0f7;
+}
+
+body a:hover {
+	color: #f4f4f9;
+}
+
+body a:active {
+	color: #4c8cd8;
+}
+
+/* 设置图片样式 */
+body img {
+	width: 100%;
+}
+/* 设置导航栏样式 */
+nav {
+	position: fixed;
+	z-index: 999;
+	margin: 0;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+
+nav ul {
+	margin: 0;
+	width: 100%;
+	padding: 0 3em;
+	list-style: none;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: stretch;
+	justify-content: stretch;
+	background: #fff;
+	box-shadow: 0 8px 15px -10px rgba(0, 0, 0, 0.3);
+}
+
+nav li {
+	display: inline-flex;
+}
+
+nav a {
+	width: 100%;
+	text-decoration: none;
+	padding: 0.8em 1em 0.4em;
+}
+
+nav a:hover {
+	color: #1d1d20;
+	border-bottom: 2px solid #1d1d20;
+}
+
+/* 设置活动状态样式 */
+.active a {
+	color: #4c8cd8;
+	border-bottom: 2px solid #4c8cd8;
+}
+
+/* 设置按钮样式 */
+.btn {
+	display: inline-block;
+	color: #8dbeef;
+	padding: 0.5em 1em;
+	border: 2px solid #8dbeef;	
+}
+
+/* 设置段落标题样式 */
+.segment-title {
+	padding-bottom: 1em;
+	margin: 2em 0;
+	background: #fff;
+	border-radius: 5px;
+	overflow: hidden;
+	box-shadow: 0 4px 10px -20px rgba(0, 0, 0, 0.1);
+}
+
+.segment-title h2 {
+	font-weight: 700;
+	letter-spacing: 0.2em;
+	text-align: center;
+	text-transform: uppercase;
+	padding-top: 0.6em;
+	padding-bottom: 1.4em;
+	position: relative;
+}
+
+.segment-title h2:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 30px;
+	height: 3px;
+	background-color: #1d1d20;
+	border-radius: 5px;
+	margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+	selector {
+		min-height: 50vh;
+	}
+}
+
+
+#references .segment-title {
+	padding: 0 2rem;
+	padding-bottom: 4rem !important;
+}
+
+#references p {
+	margin: 0.1em;
+	padding-left: 2em;
+	text-indent: -2em;
+}
+
+#references h4 {
+	margin-top: 3em;
+	border-bottom: 2px solid #1d1d20;
+}
+
+footer {
+	width: 100%;
+	font-size: 0.8em;
+	letter-spacing: 0.2em;
+	text-align: center;
+	text-transform: uppercase;
+	color: #4c8cd8;
+}
+
+.videoWrapper {
+	position: relative;
+	padding-bottom: 56.25%; /* 16:9 */
+	padding-top: 25px;
+	height: 0;
+}
+
+.videoWrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <ul>
+         <li class="active"><a href="#toTop">Home</a></li>
+         <li><a href="#need">Need</a></li>
+         <li><a href="#eat">Eat</a></li>
+         <li><a href="#help">Help</a></li>
+         <li><a href="#references">References</a></li>
+        </ul>
+       </nav>
+       
+       <article>
+        <br>
+        <!-- Title -->
+        <section id="toTop" class="center">
+         <p>
+          <h1>FOOD DATA VIS</h1> Multidisciplinary Visualisation Technology</p>
+         <p style="text-align:left;">Intro... Lorem Ipsum, Bring to the table win-win survival strategies to ensure proactive domination. At the end of the day, going forward, a new normal that has evolved from generation X is on the runway heading towards a streamlined cloud solution.
+          User generated content in real-time will have multiple touchpoints for offshoring</p>
+         <div class="flex">
+          <div class="grid-1-3 content">
+           <img src="data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjNjY2NjcwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMTAwIDEwMCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PGc+PGc+PHBhdGggZD0iTTkxLjY5Miw5NWwtMzcuMjEtMC4wMDJsMC4wMDEtMzAuMzUxaDcuNTM1djE1LjI3NWw5LjgwNS00LjU5OHY0LjYwMmw5Ljg1Ny00LjU5OHY0LjYxMWwxMC4wMTMtNC41OThWOTV6IE01Ni45NjksOTIuNTExICAgIGwzMi4yMzYsMC4wMDFWNzkuMjIxbC0xMC4wMTMsNC41OTh2LTQuNTg1bC05Ljg1Nyw0LjU5OHYtNC41OTNsLTkuODA1LDQuNTk4VjY3LjEzNWgtMi41NjFMNTYuOTY5LDkyLjUxMXoiLz48L2c+PC9nPjxnPjxwYXRoIGQ9Ik04Ni4xNDQsMzEuMDYxYy0xLjE2NS0zLjA1NS00LjE1MS01LjIzMy03LjY0OC01LjIzM2MtMC44MDIsMC0xLjU4MywwLjExNS0yLjMxNywwLjMzNGMtMS45OTQtMy4xODQtNS41NS01LjMtOS42MS01LjMgICBjLTEuMzEsMC0yLjU2OSwwLjIyMS0zLjc0LDAuNjI3Yy0xLjUxMi00LjgxNC02LjAzOC04LjIyMy0xMS4zMTktOC4yMjNjLTEuNjI0LDAtMy4xOTIsMC4zMTUtNC42NDQsMC45MjYgICBjLTAuMzU5LTAuNjkyLTAuNzY3LTEuMzYtMS4yMjItMi4wMDFjLTEuMDMtMS40NTEtMi4yNzktMi43MjctMy43MTEtMy43OTVDMzguOTU1LDYuMTc0LDM1LjQwMyw1LDMxLjY2Myw1ICAgYy0yLjMwNSwwLTQuNTQzLDAuNDQ2LTYuNjUsMS4zMjZjLTIuMDM1LDAuODUtMy44NjMsMi4wNjYtNS40MzEsMy42MTZjLTEuNTY5LDEuNTQ5LTIuODAxLDMuMzU1LTMuNjYyLDUuMzY2ICAgYy0wLjg5MiwyLjA4NC0xLjM0NCw0LjI5Ni0xLjM0NCw2LjU3NmMwLDAuMjEsMC4wMDQsMC40MTksMC4wMTIsMC42MjdjLTEuNTA1LDAuNjkzLTIuODQ5LDEuNzI2LTMuODk4LDMuMDIxICAgYy0xLjUzMywxLjg5MS0yLjM3OCw0LjI2NS0yLjM3OCw2LjY4NmMwLDIuODU4LDEuMTI0LDUuNTQzLDMuMTY2LDcuNTYyYzIuMDM5LDIuMDE3LDQuNzUxLDMuMTI3LDcuNjMzLDMuMTI3aDQuMjc3ICAgYy0wLjItMC43OTgtMC4zNzMtMS42MDctMC41MTctMi40MjVoLTMuNzZjLTQuNjAzLDAtOC4zNDctMy42OTItOC4zNDctOC4yNjRjMC0yLjMxOCwwLjk3MS00LjQyLDIuNTMzLTUuOTI1ICAgYzAuMDgyLTAuMDc5LDAuMTY2LTAuMTU3LDAuMjUxLTAuMjMyYzAuMjU2LTAuMjI4LDAuNTI3LTAuNDQsMC44MS0wLjYzNWMwLjg1LTAuNTg1LDEuODE0LTEuMDE5LDIuODU0LTEuMjYxICAgYy0wLjA2Mi0wLjM2OC0wLjEwOC0wLjc0NC0wLjEzOC0xLjEyNWMtMC4wMTUtMC4xOTEtMC4wMjctMC4zODItMC4wMzQtMC41NzVjLTAuMDA3LTAuMTkzLTAuMDExLTAuMzg3LTAuMDExLTAuNTgxICAgYzAtMi4yNDgsMC41MTgtNC4zNzUsMS40NDMtNi4yNzJjMC4wNTItMC4xMDUsMC4xMDQtMC4yMSwwLjE1OC0wLjMxNGMwLjM3Ny0wLjcyNywwLjgxNC0xLjQxOSwxLjMwNi0yLjA2OCAgIGMwLjA3LTAuMDkzLDAuMTQyLTAuMTg1LDAuMjE0LTAuMjc2YzAuMTQ1LTAuMTgyLDAuMjk0LTAuMzYxLDAuNDQ3LTAuNTM1YzAuNDYtMC41MjUsMC45NTgtMS4wMTYsMS40ODktMS40NyAgIGMyLjU2Ny0yLjE5Niw1LjkxNS0zLjUyNCw5LjU3Ny0zLjUyNGMzLjkyLDAsNy40ODEsMS41MjYsMTAuMTA3LDQuMDA5YzAuMTM4LDAuMTMxLDAuMjc0LDAuMjY0LDAuNDA3LDAuNCAgIGMwLjc5OCwwLjgxNiwxLjQ5OSwxLjcyNCwyLjA4NiwyLjcwN2MwLjU4NywwLjk4MywxLjA2LDIuMDQxLDEuNCwzLjE1NWMwLjgwNi0wLjYzLDEuNzE1LTEuMTMyLDIuNjk4LTEuNDc2ICAgYzAuOTg0LTAuMzQ0LDIuMDQyLTAuNTMxLDMuMTQ5LTAuNTMxYzEuMjEyLDAsMi4zNywwLjIyNSwzLjQzMywwLjYzN2MyLjM5MiwwLjkyNSw0LjMwNCwyLjc5LDUuMjc0LDUuMTM3ICAgYzAuMTA4LDAuMjYxLDAuMjA0LDAuNTI4LDAuMjg4LDAuOGMwLjAyOSwwLjA5NSwwLjA1NSwwLjE5MiwwLjA4MiwwLjI4OWMtMy4xMzQsMS45MzUtNS4yMzksNS4zNDQtNS4zMjIsOS4yNDMgICBjLTIuMjU2LDEuMjkyLTMuNzcxLDMuNy0zLjc3MSw2LjQ1MmMwLDAuNzc4LDAuMTIxLDEuNTI5LDAuMzQ1LDIuMjM1aC00LjM2NWMwLjA5NCwwLjQ0MiwwLjE0NSwwLjkwMSwwLjE0NSwxLjM3MSAgIGMwLDMuNjIxLTIuOTQ2LDYuNTY2LTYuNTY2LDYuNTY2cy02LjU2Ni0yLjk0Ni02LjU2Ni02LjU2NmMwLTAuNDcsMC4wNTEtMC45MjgsMC4xNDUtMS4zNzFoLTYuNjg1ICAgYzAuMTYxLDAuODIsMC4zNTQsMS42MjgsMC41NzYsMi40MjVoMy41NDFjMC41MjQsNC40OTcsNC4zNTQsNy45OTksOC45ODksNy45OTlzOC40NjUtMy41MDIsOC45ODktNy45OTloMy4wMzd2LTAuMDkgICBjMS4zNzksMS43NTMsMy41MywyLjg4Myw1Ljk1MSwyLjg4M2gyNS4xMmM0LjE1NywwLDcuNTM4LTMuMzQ3LDcuNTM4LTcuNDU0QzkxLjY4OSwzNC44MTUsODkuMzM5LDMxLjkyMiw4Ni4xNDQsMzEuMDYxeiAgICBNODQuMTUxLDQzLjIxNEg1OS4wMjZjLTAuNjExLDAtMS4xOTYtMC4xMDktMS43MzgtMC4zMDdjLTEuMTkzLTAuNDM2LTIuMTczLTEuMzA5LTIuNzQxLTIuNDI0ICAgYy0wLjM0My0wLjY3MS0wLjUzNy0xLjQzLTAuNTM3LTIuMjM1YzAtMi4zNDYsMS42NTUtNC4zMjQsMy44NzUtNC44MzljLTAuMDc0LTAuNDQzLTAuMTEtMC45MDMtMC4xMS0xLjM3MSAgIGMwLTMuNTcsMi4xNzYtNi42MzEsNS4yODYtNy45NjljMC4wNTctMC4wMjUsMC4xMTQtMC4wNDgsMC4xNzItMC4wNzJjMC4wODItMC4wMzMsMC4xNjUtMC4wNjYsMC4yNDgtMC4wOTcgICBjMC4wNTQtMC4wMiwwLjEwOC0wLjAzOCwwLjE2Mi0wLjA1N2MwLjA3Mi0wLjAyNSwwLjE0NS0wLjA0OSwwLjIxOC0wLjA3M2MwLjA2Mi0wLjAyLDAuMTI1LTAuMDM5LDAuMTg5LTAuMDU4ICAgYzAuMDc4LTAuMDIzLDAuMTU3LTAuMDQ1LDAuMjM2LTAuMDY2YzAuMDUtMC4wMTMsMC4wOTktMC4wMjYsMC4xNDktMC4wMzhjMC4wOTctMC4wMjQsMC4xOTQtMC4wNDYsMC4yOTItMC4wNjYgICBjMC4wMzYtMC4wMDgsMC4wNzItMC4wMTYsMC4xMDktMC4wMjNjMC4xMTMtMC4wMjIsMC4yMjctMC4wNDIsMC4zNDItMC4wNmMwLjAzMi0wLjAwNSwwLjA2NS0wLjAxLDAuMDk3LTAuMDE1ICAgYzAuMTItMC4wMTcsMC4yNC0wLjAzMiwwLjM2MS0wLjA0NWMwLjAyNy0wLjAwMiwwLjA1My0wLjAwNSwwLjA3OS0wLjAwN2MwLjEyOC0wLjAxMiwwLjI1Ni0wLjAyMywwLjM4NS0wLjAyOSAgIGMwLjAxNy0wLjAwMSwwLjAzNC0wLjAwMSwwLjA1Mi0wLjAwMmMwLjEzOS0wLjAwNiwwLjI3OC0wLjAxLDAuNDE4LTAuMDFjMC4xMywwLDAuMjU4LDAuMDAzLDAuMzg3LDAuMDA5ICAgYzMuNzk3LDAuMTYyLDYuOTcyLDIuNzA4LDguMDI3LDYuMTY0YzAuOTY5LTAuNzU3LDIuMTg0LTEuMjA2LDMuNTEzLTEuMjA2YzIuOTE0LDAsNS4zMDUsMi4xNyw1LjYxOCw0Ljk2NmgwLjAzOCAgIGMyLjc3MSwwLDUuMDIyLDIuMjI2LDUuMDIyLDQuOTY2Qzg5LjE3NCw0MC45ODksODYuOTI5LDQzLjIxNCw4NC4xNTEsNDMuMjE0eiIvPjxwYXRoIGQ9Ik00Ny4xNjgsNjEuNzgzYy0yLjk5OSwwLTUuNDM5LTIuNDQtNS40MzktNS40MzlzMi40NC01LjQzOSw1LjQzOS01LjQzOWMyLjk5OSwwLDUuNDM5LDIuNDQsNS40MzksNS40MzkgICBTNTAuMTY3LDYxLjc4Myw0Ny4xNjgsNjEuNzgzeiBNNDcuMTY4LDUzLjM4MWMtMS42MzQsMC0yLjk2MywxLjMyOS0yLjk2MywyLjk2M3MxLjMyOSwyLjk2MywyLjk2MywyLjk2MyAgIGMxLjYzNCwwLDIuOTYzLTEuMzI5LDIuOTYzLTIuOTYzUzQ4LjgwMiw1My4zODEsNDcuMTY4LDUzLjM4MXoiLz48cGF0aCBkPSJNNTguMTUsNjIuMzQ4Yy0yLjI5MiwwLTQuMTU3LTEuODY1LTQuMTU3LTQuMTU3YzAtMi4yOTIsMS44NjUtNC4xNTcsNC4xNTctNC4xNTdjMi4yOTIsMCw0LjE1NywxLjg2NSw0LjE1Nyw0LjE1NyAgIEM2Mi4zMDcsNjAuNDg0LDYwLjQ0Miw2Mi4zNDgsNTguMTUsNjIuMzQ4eiBNNTguMTUsNTYuNTIxYy0wLjkyMSwwLTEuNjcsMC43NDktMS42NywxLjY3czAuNzQ5LDEuNjcsMS42NywxLjY3ICAgczEuNjctMC43NDksMS42Ny0xLjY3UzU5LjA3MSw1Ni41MjEsNTguMTUsNTYuNTIxeiIvPjxnPjxnPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzY2NjY3MCIgc3Ryb2tlLXdpZHRoPSIyLjQ4NyIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNMjguNTg5LDE5LjY5MSAgICAgYy0yLjMwNSw0LjYwMS0zLjYwMiw5Ljc5NS0zLjYwMiwxNS4yOTFjMCwxNi41NDUsMTEuNzUyLDMwLjM0NiwyNy4zNjQsMzMuNTEiLz48Zz48cG9seWdvbiBwb2ludHM9IjIyLjY2OCwyMi4wOTkgMjguMzI3LDIwLjIxNSAzMC4yMDgsMjUuODc1IDMxLjgxMSwyMi42NzQgMjkuOTI5LDE3LjAxNiAyNC4yNzEsMTguODk4ICAgICAiLz48L2c+PC9nPjwvZz48L2c+PC9zdmc+"><br>
+           <small>Food Waste accounts for<br>
+                       <em>8%</em><br>
+                       of all global greenhouse gas emissions</small>
+          </div>
+          <div class="grid-1-3 content">
+           <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzIwMCcgZmlsbD0iIzY2NjY3MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBkYXRhLW5hbWU9IkxheWVyIDIiIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB4PSIwcHgiIHk9IjBweCI+PHRpdGxlPmVjb2xvZ3ktYW5kLWVudmlyb25tZW50MjwvdGl0bGU+PHBhdGggZD0iTTMxLjYxLDMyLjg5SDEzLjA2YTEuNSwxLjUsMCwwLDAsMCwzSDMxLjYxQTEuNSwxLjUsMCwwLDAsMzEuNjEsMzIuODlaIi8+PHBhdGggZD0iTTg3LjI3LDc0LjA3SDg1LjU2YTYuNzUsNi43NSwwLDAsMC0yLTMuNDhjLTgtMzAuMzUtMzIuNDMtMzYuMDYtMzYtMzYuNzNWMjQuNDNhMS41LDEuNSwwLDAsMC0xLjUtMS41SDM3LjhhMS41LDEuNSwwLDAsMC0xLjUsMS41djIuMjhoLTI3YTEuNSwxLjUsMCwwLDAtMS41LDEuNVY1Ny4wN2ExLjUsMS41LDAsMCwwLDEuNSwxLjVoMjd2Mi4yNmExLjUsMS41LDAsMCwwLDEuNSwxLjVoOC4yOGExLjUsMS41LDAsMCwwLDEuNS0xLjV2LTFBMjQuMTQsMjQuMTQsMCwwLDEsNTYsNzEuNjVhNi42NSw2LjY1LDAsMCwwLTEuMDksMi40MkgyOS41NWExLjUsMS41LDAsMCwwLDAsM0g1Ni4yNGExLjUsMS41LDAsMCwwLDEuNS0xLjUsMy43OSwzLjc5LDAsMCwxLDMuNzctMy43NywzLjc3LDMuNzcsMCwwLDEsMy43NywzLjc3LDEuNSwxLjUsMCwwLDAsMywwLDYuNzksNi43OSwwLDAsMC0xLTMuNSw0LDQsMCwwLDEsLjctMC4yMSwzLjA4LDMuMDgsMCwwLDEsLjY2LTAuMDYsMy43NywzLjc3LDAsMCwxLDMuNjIsMi43OCw2LjM4LDYuMzgsMCwwLDAtLjA5LDEsMS41LDEuNSwwLDAsMCwxLjUsMS41aDAuMjNhMS41LDEuNSwwLDAsMCwxLjUtMS41LDYuOTQsNi45NCwwLDAsMC0uMDgtMSwzLjc2LDMuNzYsMCwwLDEsNy4zOSwxLDEuNSwxLjUsMCwwLDAsMS41LDEuNWgzQTEuNSwxLjUsMCwxLDAsODcuMjcsNzQuMDdaTTEwLjgyLDU1LjU3VjI5LjcxSDM2LjNWNTUuNTdIMTAuODJaTTM5LjMsNTkuMzNWNTcuMDdoMFYyOC4yMWgwVjI1LjkzaDUuMjhWNTYuODhhMS40NiwxLjQ2LDAsMCwwLDAsLjR2MkgzOS4zWk03My44LDcxLjJhNi43Nyw2Ljc3LDAsMCwwLTUtMi4zOEEyNi43MywyNi43MywwLDAsMCw1Ni4zLDUyLjM5YTEuNSwxLjUsMCwwLDAtMS4zNywyLjY3LDI0LjE4LDI0LjE4LDAsMCwxLDExLDE0LjM1LDYuNjMsNi42MywwLDAsMC0uNzguNDIsNi43NCw2Ljc0LDAsMCwwLTYuNjQtLjI5QTI3LjA2LDI3LjA2LDAsMCwwLDQ3LjU4LDU2LjIzVjM2LjkxQzUyLDM3LjgsNzIsNDMuMiw3OS45Myw2OC44OGE2LjY4LDYuNjgsMCwwLDAtMS0uMDhBNi43OCw2Ljc4LDAsMCwwLDczLjgsNzEuMloiLz48cGF0aCBkPSJNOTEuNjEsNjIuNTRhMS41LDEuNSwwLDAsMC0yLjExLjI0bC00LjE4LDUuMjdhMS41LDEuNSwwLDEsMCwyLjM1LDEuODZsNC4xOC01LjI3QTEuNSwxLjUsMCwwLDAsOTEuNjEsNjIuNTRaIi8+PHBhdGggZD0iTTcxLjg5LDU1LjU2YTEuNSwxLjUsMCwwLDAtMS41LDEuNXY3LjQ1YTEuNSwxLjUsMCwwLDAsMywwVjU3LjA2QTEuNSwxLjUsMCwwLDAsNzEuODksNTUuNTZaIi8+PHBhdGggZD0iTTUyLjQ2LDcyLjU5YTEuNSwxLjUsMCwwLDAsMS42NS0yLjVMNDgsNjZhMS41LDEuNSwwLDEsMC0xLjY1LDIuNVoiLz48L3N2Zz4"><br>
+           <small>Food Waste accounts for<br>
+                       <em>24%</em><br>
+                       of Freshwater use in Agriculture</small>
+          </div>
+          <div class="grid-1-3 content">
+           <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMjAwJyBoZWlnaHQ9JzIwMCcgZmlsbD0iIzY2NjY3MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDEwMCAxMDAiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxnPjxwYXRoIGQ9Ik0xNiw2Ni42aDkuOGMwLjUsNi4xLDUuNiwxMC45LDExLjgsMTAuOWM2LjYsMCwxMS45LTUuMywxMS45LTExLjlWMzhjMC01LjQsNC40LTkuOSw5LjktOS45aDEwLjdsLTAuMSw1ICAgIGMwLDAuNiwwLjQsMSwxLDFjMCwwLDAsMCwwLDBjMC41LDAsMS0wLjQsMS0xbDAuMS02YzAtMC4zLTAuMS0wLjUtMC4zLTAuN3MtMC40LTAuMy0wLjctMC4zSDU5LjRjLTYuNiwwLTExLjksNS4zLTExLjksMTEuOXYyNy43ICAgIGMwLDUuNC00LjQsOS45LTkuOSw5LjljLTUuMSwwLTkuNC0zLjktOS44LTguOWgxMC43YzAuNiwwLDEtMC40LDEtMVYyOC43di02LjljMC0wLjYtMC40LTEtMS0xSDI1LjljLTAuNiwwLTEsMC40LTEsMXY1LjkgICAgQzE5LDI3LjksMTUsMzEuNCwxNSwzNi41djI5LjFDMTUsNjYuMSwxNS40LDY2LjYsMTYsNjYuNnogTTI2LjcsNTYuM2MtMS4yLDAtMi4yLTEtMi4yLTIuMnMxLTIuMiwyLjItMi4yczIuMiwxLDIuMiwyLjIgICAgUzI3LjksNTYuMywyNi43LDU2LjN6IE0yNi45LDIyLjloMTAuNnY0LjlIMjYuOVYyMi45eiBNMTcsMzYuNWMwLTUsNC4zLTYuNyw4LjMtNi43aDAuNmgxMS42djM0LjloLTkuN3YtNi40ICAgIGMxLjgtMC41LDMuMi0yLjEsMy4yLTRjMC0yLjMtMS45LTQuMi00LjItNC4yYy0yLjMsMC00LjIsMS45LTQuMiw0LjJjMCwxLjksMS40LDMuNiwzLjIsNHY2LjRIMTdWMzYuNXoiLz48cGF0aCBkPSJNODUuNSw4NS43aC03LjdjMS4xLTYuMiw2LjYtMTQuNSw2LjYtMTQuNmMwLjItMC4zLDAuMi0wLjcsMC0xLjFjLTAuMi0wLjMtMC41LTAuNS0wLjktMC41ICAgIEM3Ni4yLDcwLDcyLDc0LjgsNzAuNCw3N2MtNS45LTYuMi0xMy4yLTQuMS0xMy4zLTQuMWMtMC40LDAuMS0wLjcsMC40LTAuNywwLjhjMCwwLjQsMC4yLDAuOCwwLjUsMWM1LDIuOCw2LjEsOC42LDYuNCwxMC45SDE1ICAgIGMtMC42LDAtMSwwLjQtMSwxczAuNCwxLDEsMWg1OS42YzAsMCwwLDAsMCwwczAsMCwwLDBoMTAuOWMwLjYsMCwxLTAuNCwxLTFTODYuMSw4NS43LDg1LjUsODUuN3ogTTgxLjYsNzEuOCAgICBjLTEuOCwzLTUuMSw4LjktNS44LDEzLjloLTAuNGMtMS0zLTIuMy01LjMtMy42LTcuMUM3Mi43LDc3LjEsNzUuOSw3Myw4MS42LDcxLjh6IE02MCw3NC41YzIuNC0wLjEsNi4zLDAuNiw5LjYsNC43ICAgIGMwLDAsMC4xLDAuMSwwLjEsMC4xYzEuMywxLjYsMi41LDMuNiwzLjUsNi4zaC03LjlDNjUuMSw4My41LDY0LjIsNzguMSw2MCw3NC41eiIvPjxjaXJjbGUgY3g9IjU4IiBjeT0iNjIuMyIgcj0iMS41Ii8+PGNpcmNsZSBjeD0iNjYuNyIgY3k9IjYyLjMiIHI9IjEuNSIvPjxjaXJjbGUgY3g9Ijc1LjQiIGN5PSI2Mi4zIiByPSIxLjUiLz48Y2lyY2xlIGN4PSI2Mi40IiBjeT0iNTQuOCIgcj0iMS41Ii8+PGNpcmNsZSBjeD0iNzEuMSIgY3k9IjU0LjgiIHI9IjEuNSIvPjxjaXJjbGUgY3g9Ijc5LjgiIGN5PSI1NC44IiByPSIxLjUiLz48Y2lyY2xlIGN4PSI3MS4xIiBjeT0iMzkuNyIgcj0iMS41Ii8+PGNpcmNsZSBjeD0iNjYuNiIgY3k9IjQ3LjIiIHI9IjEuNSIvPjxjaXJjbGUgY3g9Ijc1LjMiIGN5PSI0Ny4yIiByPSIxLjUiLz48Y2lyY2xlIGN4PSI4My45IiBjeT0iNjIuMyIgcj0iMS41Ii8+PC9nPjwvZz48L3N2Zz4="><br>
+           <small>Food Waste accounts for<br>
+                       <em>28</em> <span>million<br>tonnes</span><br>
+                       of the fertilisers and pesticides used in Agriculture</small>
+          </div>
+         </div>
+         <p style="text-align:left;">Lorem Ipsum Leverage agile frameworks to provide a robust synopsis for high level overviews. Iterative approaches to corporate strategy foster collaborative thinking to further the overall value proposition. Organically grow the holistic world view
+          of disruptive innovation via workplace diversity and empowerment. <a href="#data3">(WWF 2017)</a></p>
+         <br>
+         <a class="btn" href="">Find Out More</a>
+        </section>
+       
+        <!-- 1 -->
+        <section id="need">
+         <div class="segment-title">
+          <img src="https://s26.postimg.org/urp3o96gp/cow.jpg">
+          <h2>How Much We Need...</h2>
+          <blockquote>Which foods have the smallest (and largest) energy footprint, thereby having the most environmental impact? While most people probably realize that meat products have a larger energy and environmental impact, the degree of difference isn’t immediately
+           clear. How much difference does it make if you’re a vegetarian, or if you’re almost entirely carnivorous? The following list provides a rough estimate of the energy required to produce different kinds of foods, in order from least to most energy intensive...
+           <a href="#data1">(True Cost. N.D)</a></blockquote>
+         </div>
+       
+         <div class="grid-2-3">
+          <div class="chart-container">
+           <canvas id="chart1"></canvas>
+          </div>
+          <p class="text-center"><small>Production Energy (kWh) Per Pound</small></p>
+         </div>
+       
+         <div class="grid-1-3 content">
+          <h3>Title</h3>
+          <p><em>Attempt at explaination??</em> &#151; Corn soaks up a lot of sun. Milk is a byproduct of beef?????
+           <small>Note:<br>This is taken from a small sample size & not all agriculture and logistics have been factored in.</small></p>
+          <a class="btn" href="">More info...</a>
+         </div>
+         <div>
+          <div style="height:80vh;" class="chart-container">
+           <canvas id="chart2"></canvas>
+          </div>
+          <p class="text-center"><small>(Measured as Food Calories / Energy Used in Production)</small></p>
+         </div>
+       
+         <div>
+          <p><em>BBllabla</em> &#151; Efficiency as in energy it takes to produce the produce and how</p>
+          <p>Nunc hendrerit turpis vitae suscipit faucibus. Pellentesque at pulvinar nibh. Phasellus et malesuada enim. Cras iaculis nunc sed efficitur accumsan. Nullam vel elementum elit. Aenean viverra dignissim felis, et ultricies nisl dignissim ut. Donec rhoncus
+           rutrum lectus, nec elementum metus malesuada at. Donec efficitur velit dolor, aliquet tincidunt enim tempus sed. Maecenas in quam id lorem lacinia pellentesque nec eget mi.</p>
+         </div>
+        </section>
+       
+        <!-- 2 -->
+        <section id="eat">
+         <div class="segment-title">
+          <img src='https://s26.postimg.org/8haffrny1/waste.jpg' border='0' alt='waste' />
+          <h2>How Much We Eat...</h2>
+          <blockquote><b>General Observations</b><br> Foods that contain large amounts of fat, sugar, and/or starch have low Fullness Factors, and are much easier to overeat. Foods that contain large amounts of water, dietary fiber, and/or protein have the highest Fullness
+           Factors. These high-FF foods, which include most vegetables, fruits, and lean meats, do a better job of satisfying your hunger.<a href="#data2">(Condé Nast. 2014)</a></blockquote>
+         </div>
+       
+         <div class="chart-container">
+          <canvas id="chart3"></canvas>
+         </div>
+       
+         <div class="grid-2-3">
+          <h3>Title</h3>
+          <blockquote><em>24% of 2010 global greenhouse gas emissions<em>: Greenhouse gas emissions from this sector come mostly from agriculture (cultivation of crops and livestock) and deforestation. This estimate does not include the CO2 that ecosystems remove from the atmosphere by sequestering carbon in biomass, dead organic matter, and soils, which offset approximately 20% of emissions from this sector. <a href="data4">EPA 2017.</a></blockquote>
+                   </div>
+       
+                   <div class="grid-1-3 content">
+                       <div class="chart-container">
+                           <canvas id="chart4"></canvas>
+                       </div>
+                   </div>
+       
+                   <div class="videoWrapper">
+                       <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/6RlxySFrkIM" frameborder="0" allowfullscreen></iframe></div>
+                   </section>
+       
+               <!-- 3 -->
+               <section id="help">
+                   <div class="segment-title">
+                       <div class="content">
+                           <h2>How we can help</h2>		
+                           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non finibus tortor, id commodo nulla. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Quisque ac lobortis tortor. Suspendisse euismod ultricies massa ac consequat. Phasellus in arcu eu lacus viverra accumsan. Suspendisse potenti.</p><br>
+                           <a hre="https://www.eatforhealth.gov.au/guidelines/australian-guide-healthy-eating">Australian Guide to Healthy Eating</a>
+                       </div>
+                       <div class="grid-2-3 content">
+                           <p><br> Donte to a charity of your choice with <a href="https://tab.gladly.io/">Tab for a cause</a></p>
+                       </div>
+                       <div class="grid-1-3 content"><img src="https://pbs.twimg.com/profile_images/903316030860124160/verfxf6V.jpg"></div>
+                   </div>
+                   </div>
+               </section>
+       
+           <!-- END	 -->
+           <section id="references">
+               <div class="segment-title">
+                   <h2>References</h2>
+       
+                   <p>Cool infographics <a href="http://www.fao.org/state-of-food-security-nutrition/en/">FAO's State of Nutrition</a>, <a href="www.nationalgeographic.com/what-the-world-eats/">National Georaphic - What the World Eats</a></p>
+       
+                   <h4>Data Sources</h4>
+                   <p id="data1">True Cost. N.D. "List of Foods By Environmental Impact and Energy Efficiency". <a href="https://truecostblog.com/2010/02/24/list-of-foods-by-environmental-impact-and-energy-efficiency/">https://truecostblog.com/2010/02/24/list-of-foods-by-environmental-impact-and-energy-efficiency/</a>.
+                   </p>
+                   <p id="data2">Condé Nast. 2014. "Fullness Factor". <a href="		http://nutritiondata.self.com/topics/fullness-factor">http://nutritiondata.self.com/topics/fullness-factor</a>.
+                   </p>
+                   <p id="data3">WWF Australia. 2016. "REDUCING FOOD WASTE". <a href="http://www.wwf.org.au/what-we-do/food/reducing-food-waste">http://www.wwf.org.au/what-we-do/food/reducing-food-waste</a>.
+                   </p>
+                   <p id="data4">EPA. 2017. "Global Greenhouse Gas Emissions Data". <a href="https://www.epa.gov/ghgemissions/global-greenhouse-gas-emissions-data">https://www.epa.gov/ghgemissions/global-greenhouse-gas-emissions-data</a>.
+                   </p>
+       
+                   <h4>Code References</h4>
+                   <p id="ref1">Chart JS. 2017. "Getting Started". <a href="http://www.chartjs.org/docs/latest/getting-started/">http://www.chartjs.org/docs/latest/getting-started/</a>.
+                   </p>
+                   <p id="ref2">Michael Freeman. N.D. "Scrollytelling - Using scrolling to tell stories". <a href="http://mfviz.com/scrollytelling/#/">http://mfviz.com/scrollytelling/#/</a>.
+                   </p>
+                   <p id="ref3">Chart JS. 2017. "Dual Axis chart". <a href="https://stackoverflow.com/questions/38085352/how-to-use-two-y-axes-in-chart-js-v2">https://stackoverflow.com/questions/38085352/how-to-use-two-y-axes-in-chart-js-v2</a>.
+                   </p>
+                   <p id="ref3">Chris Coiyer. 2017. "Smooth Scrolling". <a href="https://css-tricks.com/snippets/jquery/smooth-scrolling/">https://css-tricks.com/snippets/jquery/smooth-scrolling/</a>.</p>
+                   <p id="ref3">Noun Project 2017. <a href="https://thenounproject.com/">https://thenounproject.com/</a>.</p>
+               </div>
+           </section>
+       
+           <footer>Hello!</footer>
+       
+           </article>
+
+           <script>
+            $.noConflict();
+jQuery(document).ready(function() {
+	// Select all links with hashes
+	jQuery('a[href*="#"]')
+		// Remove links that don't actually link to anything
+		.not('[href="#"]')
+		.not('[href="#0"]')
+		.click(function(event) {
+			// On-page links
+			if (
+				location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") &&
+				location.hostname == this.hostname
+			) {
+				// Figure out element to scroll to
+				var target = jQuery(this.hash);
+				target = target.length ? target : jQuery("[name=" + this.hash.slice(1) + "]");
+				// Does a scroll target exist?
+				if (target.length) {
+					// Only prevent default if animation is actually gonna happen
+					event.preventDefault();
+					jQuery("html, body").animate(
+						{
+							scrollTop: target.offset().top
+						},
+						500,
+						function() {
+							// Callback after animation
+							// Must change focus!
+							var $target = jQuery(target);
+							$target.focus();
+							if ($target.is(":focus")) {
+								// Checking if the target was focused
+								return false;
+							} else {
+								$target.attr("tabindex", "-1"); // Adding tabindex for elements not focusable
+								$target.focus(); // Set focus again
+							}
+						}
+					);
+				}
+			}
+		});
+
+	var need = new Waypoint({
+		element: document.getElementById("need"),
+		handler: function(direction) {
+			jQuery("nav ul li:nth-child(1)").toggleClass("active");
+			jQuery("nav ul li:nth-child(2)").toggleClass("active");
+		}
+	});
+
+	var need = new Waypoint({
+		element: document.getElementById("eat"),
+		handler: function(direction) {
+			jQuery("nav ul li:nth-child(2)").toggleClass("active");
+			jQuery("nav ul li:nth-child(3)").toggleClass("active");
+		}
+	});
+	
+	var need = new Waypoint({
+		element: document.getElementById("help"),
+		handler: function(direction) {
+			jQuery("nav ul li:nth-child(3)").toggleClass("active");
+			jQuery("nav ul li:nth-child(4)").toggleClass("active");
+		}
+	});
+
+	var need = new Waypoint({
+		element: document.getElementById("references"),
+		handler: function(direction) {
+			jQuery("nav ul li:nth-child(4)").toggleClass("active");
+			jQuery("nav ul li:nth-child(5)").toggleClass("active");
+		}
+	});
+
+	var waypoint1 = new Waypoint({
+		element: document.getElementById("chart1"),
+		handler: function(direction) {
+			console.log("meme");
+			// Chart 1
+			var chart1 = new Chart.Doughnut("chart1", {
+				options: {
+					maintainAspectRatio: false,
+					legend: {
+						position: "bottom"
+					},
+					title: {
+						display: true,
+						text: "List of Foods By Energy Required to Produce One Pound",
+						fontSize: 18
+					}
+				},
+				data: {
+					labels: [
+						"Corn",
+						"Milk",
+						"Apples",
+						"Eggs",
+						"Chicken",
+						"Cheese",
+						"Pork",
+						"Beef"
+					],
+					datasets: [
+						{
+							label: "Production Energy (kWh) Per Lb",
+							borderColor: "rgba(211, 164, 36,1)",
+							borderWidth: 0,
+							backgroundColor: [
+								"hsla(280, 70%, 50%, 0.5)",
+								"hsla(220, 70%, 50%, 0.5)",
+								"hsla(160, 70%, 50%, 0.5)",
+								"hsla(100, 70%, 50%, 0.5)",
+								"hsla(80, 70%, 50%, 0.5)",
+								"hsla(60, 70%, 50%, 0.5)",
+								"hsla(40, 70%, 50%, 0.5)",
+								"hsla(20, 70%, 50%, 0.5)",
+								"hsla(0, 70%, 50%, 0.5)"
+							],
+							hoverBackgroundColor: "hsla(235, 12%, 27%, 0.5)",
+							data: ["0.43", "0.75", "1.67", "4", "4.4", "6.75", "12.6", "31.5"]
+						}
+					]
+				}
+			});
+
+			this.destroy();
+		},
+		offset: "50%"
+	});
+
+	var waypoint2 = new Waypoint({
+		element: document.getElementById("chart2"),
+		handler: function(direction) {
+			// Chart 2
+			var chart2 = new Chart.Bar("chart2", {
+				options: {
+					maintainAspectRatio: false,
+					legend: {
+						position: "bottom"
+					},
+					title: {
+						display: true,
+						text: " Energy Efficiency of Various Foods",
+						fontSize: 18
+					},
+					scales: {
+						yAxes: [
+							{
+								id: "A",
+								ticks: {
+									min: 0,
+									max: 100,
+									callback: function(value) {
+										return value + "%";
+									}
+								},
+								scaleLabel: {
+									display: true,
+									labelString: "Percentage"
+								}
+							},
+							{
+								id: "B",
+								type: "linear",
+								position: "left",
+								scaleLabel: {
+									display: true,
+									labelString: "Pound"
+								}
+							}
+						]
+					}
+				},
+				data: {
+					labels: [
+						"Corn",
+						"Milk",
+						"Cheese",
+						"Eggs",
+						"Apples",
+						"Chicken",
+						"Pork",
+						"Beef"
+					],
+					datasets: [
+						{
+							label: "Calories / Lb",
+							yAxisID: "B",
+							borderWidth: 0,
+							backgroundColor: "hsla(235, 12%, 27%, 0.5)",
+							data: ["390", "291", "1824", "650", "216", "573", "480", "1176"]
+						},
+						{
+							label: "Energy Efficiency",
+							yAxisID: "A",
+							backgroundColor: "hsla(160, 70%, 50%, 0.5)",
+							borderColor: "hsla(160, 70%, 50%, 0.5)",
+							borderWidth: 0,
+							hoverBackgroundColor: "hsla(235, 12%, 27%, 0.5)",
+							data: ["102", "45", "31", "19", "15", "15", "8.5", "4.3"],
+							type: "line"
+						}
+					]
+				}
+			});
+
+			this.destroy();
+		},
+		offset: "50%"
+	});
+
+	var waypoint3 = new Waypoint({
+		element: document.getElementById("chart3"),
+		handler: function(direction) {
+			// Chart 3
+			var chart3 = new Chart.Bar("chart3", {
+				options: {
+					maintainAspectRatio: false,
+					legend: {
+						position: "bottom"
+					},
+					title: {
+						display: true,
+						text: "Fullness Factors for Common Foods",
+						fontSize: 18
+					},
+					scales: {
+						yAxes: [
+							{
+								stacked: true,
+								gridLines: {
+									display: true,
+									color: "hsla(235, 12%, 27%, 0.5)"
+								}
+							}
+						],
+						xAxes: [
+							{
+								gridLines: {
+									display: false
+								}
+							}
+						]
+					}
+				},
+				data: {
+					labels: [
+						"Bean sprouts",
+						"Watermelon",
+						"Grapefruit",
+						"Carrots",
+						"Oranges",
+						"Fish broiled",
+						"Chicken breast (Roasted)",
+						"Apples",
+						"Sirloin steak (Broiled)",
+						"Oatmeal",
+						"Popcorn",
+						"Baked potato",
+						"Lowfat yogurt",
+						"Banana",
+						"Macaroni and cheese",
+						"Brown rice",
+						"Spaghetti",
+						"White rice",
+						"Pizza",
+						"Peanuts",
+						"Ice cream",
+						"White bread",
+						"Raisins",
+						"Snickers Bar",
+						"Honey",
+						"Sugar (Sucrose)",
+						"Glucose",
+						"Potato chips",
+						"Butter"
+					],
+					datasets: [
+						{
+							label: "Energy (kWh) to Produce 1 Lb",
+							backgroundColor: [
+								"#E53F00",
+								"#DC4106",
+								"#D4440D",
+								"#CC4714",
+								"#C4491B",
+								"#BC4C22",
+								"#B34F28",
+								"#AB512F",
+								"#A35436",
+								"#9B573D",
+								"#935944",
+								"#8B5C4B",
+								"#825F51",
+								"#7A6158",
+								"#72645F",
+								"#6A6766",
+								"#62696D",
+								"#596C73",
+								"#516F7A",
+								"#497181",
+								"#417488",
+								"#39778F",
+								"#317996",
+								"#287C9C",
+								"#207FA3",
+								"#1881AA",
+								"#1084B1",
+								"#0887B8",
+								"#008ABF"
+							],
+							borderColor: "rgba(211, 164, 36,1)",
+							borderWidth: 0,
+							hoverBackgroundColor: "hsla(235, 12%, 27%, 0.5)",
+							hoverBorderColor: "rgba(211, 164, 36,1)",
+							data: [
+								"4.6",
+								"4.5",
+								"4.0",
+								"3.8",
+								"3.5",
+								"3.4",
+								"3.3",
+								"3.3",
+								"3.2",
+								"3.0",
+								"2.9",
+								"2.5",
+								"2.5",
+								"2.5",
+								"2.5",
+								"2.3",
+								"2.2",
+								"2.1",
+								"2.1",
+								"2.0",
+								"1.8",
+								"1.8",
+								"1.6",
+								"1.5",
+								"1.4",
+								"1.3",
+								"1.3",
+								"1.2",
+								"0.5"
+							]
+						}
+					]
+				}
+			});
+
+			this.destroy();
+		},
+		offset: "50%"
+	});
+
+	var waypoint4 = new Waypoint({
+		element: document.getElementById("chart4"),
+		handler: function(direction) {
+			// Chart 4
+			var chart4 = new Chart.Doughnut("chart4", {
+				options: {
+					maintainAspectRatio: false,
+					cutoutPercentage: 0,
+					legend: {
+						position: "bottom"
+					},
+					title: {
+						display: true,
+						text: "Global Emissions by Economic Sector",
+						fontSize: 18
+					}
+				},
+				data: {
+					labels: [
+						"Electricity & Heat Production",
+						"Agriculture, Forestry, and Other Land Use",
+						"Transportation",
+						"Industrial",
+						"Other Energy",
+						"Buildings"
+					],
+					datasets: [
+						{
+							label: "",
+							backgroundColor: [
+								"hsla(220, 70%, 50%, 0.5)",
+								"hsla(160, 70%, 50%, 0.5)",
+								"hsla(100, 70%, 50%, 0.5)",
+								"hsla(80, 70%, 50%, 0.5)",
+								"hsla(60, 70%, 50%, 0.5)",
+								"hsla(40, 70%, 50%, 0.5)"
+							],
+							borderWidth: 0,
+							hoverBackgroundColor: "rgba(211, 164, 36,0.4)",
+							hoverBorderColor: "rgba(211, 164, 36,1)",
+							data: ["25", "24", "21", "14", "10", "6"]
+						}
+					]
+				}
+			});
+
+			this.destroy();
+		},
+		offset: "50%"
+	});
+});
+
+           </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- 引入Plotly.js的JavaScript库 -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div id="chart"></div>
+
+  <script type="text/javascript">
+    // 在网页加载完成后执行的JavaScript代码
+    document.addEventListener("DOMContentLoaded", function() {
+      // 定义数据
+      var data = [
+      { date: "1995 Q1", value: 48875 },
+  { date: "1995 Q2", value: 54791.66667 },
+  { date: "1995 Q3", value: 51987.5 },
+  { date: "1995 Q4", value: 49723.75 },
+  { date: "1996 Q1", value: 47000 },
+  { date: "1996 Q2", value: 48333.33333 },
+  { date: "1996 Q3", value: 43300 },
+  { date: "1996 Q4", value: 50833.33333 },
+  { date: "1997 Q1", value: 53833.33333 },
+  { date: "1997 Q2", value: 56957.5 },
+  { date: "1997 Q3", value: 59666.66667 },
+  { date: "1997 Q4", value: 52816.66667 },
+  { date: "1998 Q1", value: 48166.66667 },
+  { date: "1998 Q2", value: 57083.33333 },
+  { date: "1998 Q3", value: 64583.33333 },
+  { date: "1998 Q4", value: 61841.66667 },
+  { date: "1999 Q1", value: 59323.33333 },
+  { date: "1999 Q2", value: 56483.33333 },
+  { date: "1999 Q3", value: 60749.16667 },
+  { date: "1999 Q4", value: 65983.33333 },
+  { date: "2000 Q1", value: 60166.66667 },
+  { date: "2000 Q2", value: 63991.66667 },
+  { date: "2000 Q3", value: 72325 },
+  { date: "2000 Q4", value: 59750 },
+  { date: "2001 Q1", value: 75166.66667 },
+  { date: "2001 Q2", value: 74083.33333 },
+  { date: "2001 Q3", value: 80241.66667 },
+  { date: "2001 Q4", value: 91000 },
+  { date: "2002 Q1", value: 137083.3333 },
+  { date: "2002 Q2", value: 88525 },
+  { date: "2002 Q3", value: 105500 },
+  { date: "2002 Q4", value: 112165.8333 },
+  { date: "2003 Q1", value: 108500 },
+  { date: "2003 Q2", value: 121666.6667 },
+  { date: "2003 Q3", value: 113916.6667 },
+  { date: "2003 Q4", value: 132750 },
+  { date: "2004 Q1", value: 119666.6667 },
+  { date: "2004 Q2", value: 120241.6667 },
+  { date: "2004 Q3", value: 131316.6667 },
+  { date: "2004 Q4", value: 139816.6667 },
+  { date: "2005 Q1", value: 136216.6667 },
+  { date: "2005 Q2", value: 159075 },
+  { date: "2005 Q3", value: 161480 },
+  { date: "2005 Q4", value: 155151.6667 },
+  { date: "2006 Q1", value: 139982.5 },
+  { date: "2006 Q2", value: 168198.5 },
+  { date: "2006 Q3", value: 149166.6667 },
+  { date: "2006 Q4", value: 143438.3333 },
+  { date: "2007 Q1", value: 158416.6667 },
+  { date: "2007 Q2", value: 153025 },
+  { date: "2007 Q3", value: 158898.3333 },
+  { date: "2007 Q4", value: 165000 },
+  { date: "2008 Q1", value: 156838.8333 },
+  { date: "2008 Q2", value: 190741.1667 },
+  { date: "2008 Q3", value: 137904 },
+  { date: "2008 Q4", value: 128166.6667 },
+  { date: "2009 Q1", value: 114714.6667 },
+  { date: "2009 Q2", value: 122833.3333 },
+  { date: "2009 Q3", value: 147783.3333 },
+  { date: "2009 Q4", value: 123833.3333 },
+  { date: "2010 Q1", value: 121457.5 },
+  { date: "2010 Q2", value: 129867.3333 },
+  { date: "2010 Q3", value: 109233.3333 },
+  { date: "2010 Q4", value: 125666.6667 },
+  { date: "2011 Q1", value: 157483.3333 },
+  { date: "2011 Q2", value: 128791.6667 },
+  { date: "2011 Q3", value: 114366.1667 },
+  { date: "2011 Q4", value: 129333.3333 },
+  { date: "2012 Q1", value: 126833.3333 },
+  { date: "2012 Q2", value: 127265 },
+  { date: "2012 Q3", value: 137316.6667 },
+  { date: "2012 Q4", value: 121950 },
+  { date: "2013 Q1", value: 135716.6667 },
+  { date: "2013 Q2", value: 133800 },
+  { date: "2013 Q3", value: 129833.3333 },
+  { date: "2013 Q4", value: 117333.3333 },
+  { date: "2014 Q1", value: 123529.6667 },
+  { date: "2014 Q2", value: 112658.3333 },
+  { date: "2014 Q3", value: 119170 },
+  { date: "2014 Q4", value: 112150 },
+  { date: "2015 Q1", value: 118983.3333 },
+  { date: "2015 Q2", value: 115416.6667 },
+  { date: "2015 Q3", value: 114500 },
+  { date: "2015 Q4", value: 133750 },
+  { date: "2016 Q1", value: 112316.6667 },
+  { date: "2016 Q2", value: 149666.6667 },
+  { date: "2016 Q3", value: 150000 },
+  { date: "2016 Q4", value: 177499.1667 },
+  { date: "2017 Q1", value: 167666.6667 },
+  { date: "2017 Q2", value: 157833.3333 },
+  { date: "2017 Q3", value: 147815 },
+  { date: "2017 Q4", value: 142231.6667 },
+  { date: "2018 Q1", value: 159499.1667 },
+  { date: "2018 Q2", value: 173666.6667 },
+  { date: "2018 Q3", value: 172249.1667 },
+  { date: "2018 Q4", value: 180500 }
+        // 在此处添加其他数据点
+      ];
+
+      // 提取日期和值的数组
+      var dates = data.map(function(item) {
+        return item.date;
+      });
+
+      var values = data.map(function(item) {
+        return item.value;
+      });
+
+      // 创建图表的数据对象
+      var chartData = [{
+        x: dates,
+        y: values,
+        type: 'line'
+      }];
+
+      // 创建图表的布局对象
+      var layout = {
+        title: 'Time Series with Range Slider and Selectors',
+        xaxis: {
+          title: 'Date',
+          tickfont: {
+            size: 10
+          }
+        },
+        yaxis: {
+          title: 'Value'
+        },
+        margin: {
+          l: 50,
+          r: 50,
+          b: 50,
+          t: 80
+        }
+      };
+
+      // 在指定的<div>元素中显示图表
+      Plotly.newPlot('chart', chartData, layout);
+    });
+  </script>
+</body>
+</html>

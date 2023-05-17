@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        // 读取CSV数据
+        const data = new google.visualization.DataTable();
+        data.addColumn("number", "IMD Score");
+        data.addColumn("number", "Income Score (rate)");
+        data.addColumn("number", "Employment Score (rate)");
+        data.addColumn("number", "Education, Skills and Training Score");
+        data.addColumn(
+          "number",
+          "Income Deprivation Affecting Children Index (IDACI) Score (rate)"
+        );
+        data.addColumn(
+          "number",
+          "Income Deprivation Affecting Older People (IDAOPI) Score (rate)"
+        );
+
+        // 填充CSV数据
+        data.addRows([
+          [1.23, 2.45, 3.67, 4.56, 5.78, 6.89],
+          [2.34, 3.56, 4.78, 5.67, 6.89, 7.90],
+          [3.45, 4.67, 5.89, 6.78, 7.90, 8.01],
+          // 在这里继续添加数据行...
+        ]);
+
+        // 创建相关系数矩阵
+        const correlationMatrix = data.getNumberOfColumns() > 1
+          ? calculateCorrelationMatrix(data)
+          : null;
+
+        // 绘制热力图
+        if (correlationMatrix) {
+          const chart = new google.visualization.Heatmap(
+            document.getElementById("chart-div")
+          );
+          chart.draw(data, {
+            title: "Correlation Matrix",
+            width: 500,
+            height: 500,
+          });
+        }
+      }
+
+      function calculateCorrelationMatrix(data) {
+        const numberOfRows = data.getNumberOfRows();
+        const numberOfColumns = data.getNumberOfColumns();
+
+        const correlationMatrix = Array(numberOfColumns)
+          .fill(null)
+          .map(() => Array(numberOfColumns).fill(0));
+
+        for (let i = 0; i < numberOfColumns; i++) {
+          for (let j = 0; j < numberOfColumns; j++) {
+            const column1 = data.getColumnRange(i).values;
+            const column2 = data.getColumnRange(j).values;
+            const correlation = calculateCorrelation(column1, column2);
+
+            correlationMatrix[i][j] = correlation;
+          }
+        }
+
+        return correlationMatrix;
+      }
+
+      function calculateCorrelation(column1, column2) {
+        // 在这里编写计算相关系数的代码
+        // 这里假设计算皮尔逊相关系数
+        const sum1 = column1.reduce((sum, value) => sum + value, 0);
+        const sum2 = column2.reduce((sum, value) => sum + value, 0);
+        const mean1 = sum1 / column1.length;
+        const mean2 = sum2 / column2.length;
+        let numerator = 0;
+        let denominator1 = 0;
+        let denominator2 = 0;
+
+        for (let i = 0; i < column1.length; i++) {
+          const deviation1 = column1[i] - mean1;
+          const deviation2 = column2[i] - mean2;
+          numerator += deviation1 * deviation2;
+          denominator1 += deviation1 ** 2;
+          denominator2 += deviation2 ** 2;
+        }
+
+        const correlation =
+          numerator / Math.sqrt(denominator1 * denominator2);
+
+        return correlation;
+      }
+    </script>
+  </head>
+
+  <body>
+   

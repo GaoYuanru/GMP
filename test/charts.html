@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <title>Document</title>
+    <style>
+        #myDiv {
+            position: relative;
+            margin: 0 auto;
+            width: 70%;
+        }
+    
+        #myButton {
+        margin-top: 20px;
+        width: 200px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        cursor: pointer;
+        height: 55px;
+        text-align: center;
+        border: none;
+        background-size: 300% 100%;
+        border-radius: 50px;
+        -o-transition: all .4s ease-in-out;
+        -webkit-transition: all .4s ease-in-out;
+        transition: all .4s ease-in-out;
+        background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+        box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+    }
+    
+        #myButton:hover {
+            background-position: 100% 0;
+            -o-transition: all .4s ease-in-out;
+            -webkit-transition: all .4s ease-in-out;
+            transition: all .4s ease-in-out;
+        }
+    
+        #myButton:focus {
+            outline: none;
+        }
+    </style>
+    
+</head>
+
+<body>
+    
+   
+    <button id="myButton" onclick="changeData()">Change to 2019</button> <div id="myDiv"></div>
+    <script>
+        var data2015 = {
+            trace1: {
+                x: ['IMD Score', 'Income Score', 'Employment Score'],
+                y: [9.981, 21, 20],
+                type: 'bar',
+                name: 'E01032685',
+                marker: {
+                    color: 'rgb(249, 245, 75)',
+                    opacity: 0.7,
+                }
+            },
+            trace2: {
+                x: ['IMD Score', 'Income Score', 'Employment Score'],
+                y: [13.948, 30, 24],
+                type: 'bar',
+                name: 'E01032686',
+                marker: {
+                    color: 'rgb(139, 245, 250)',
+                    opacity: 0.7
+                }
+            },
+            trace3: {
+                x: ['IMD Score', 'Income Score', 'Employment Score'],
+                y: [21.035, 121, 93],
+                type: 'bar',
+                name: 'E01032914',
+                marker: {
+                    color: 'rgb(32, 94, 97)',
+                    opacity: 0.7
+                }
+            }
+        };
+
+        var data2019 = {
+            trace1: {
+                x: ['IMD Score', 'Income Score', 'Employment Score'],
+                y: [5.078, 13, 12],
+                type: 'bar',
+                name: 'E01032685',
+                marker: {
+                    color: 'rgb(249, 245, 75)',
+                    opacity: 0.7,
+                }
+            },
+            trace2: {
+                x: ['IMD Score', 'Income Score', 'Employment Score'],
+                y: [16.306, 23, 13],
+                type: 'bar',
+                name: 'E01032686',
+                marker: {
+                    color: 'rgb(139, 245, 250)',
+                    opacity: 0.7
+                }
+            },
+            trace3: {
+                x: ['IMD Score', 'Income Score', 'Employment Score'],
+                y: [26.057, 103, 64],
+                type: 'bar',
+                name: 'E01032914',
+                marker: {
+                    color: 'rgb(32, 94, 97)',
+                    opacity: 0.7
+                }
+            }
+        };
+
+        var layout = {
+            title: '2015 Media City Deprivation',
+            xaxis: {
+                tickangle: 0
+            },
+            yaxis: {
+                range: [0, 120]
+            },
+            barmode: 'group'
+        };
+
+        var data = data2015;
+
+        Plotly.newPlot('myDiv', [data.trace1, data.trace2, data.trace3], layout);
+
+        function changeData() {
+            var button = document.querySelector('button');
+            if (button.innerText === 'Change to 2019') {
+                button.innerText = 'Change to 2015';
+                data = data2019;
+                layout.title = '2019 Media City Deprivation';
+            } else {
+                button.innerText = 'Change to 2019';
+                data = data2015;
+                layout.title = '2015 Media City Deprivation';
+            }
+            Plotly.react('myDiv', [data.trace1, data.trace2, data.trace3], layout);
+        }
+    </script>
+
+</body>
+
+</html>

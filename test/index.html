@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Load plotly.js into the DOM -->
+  <script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+  <title>Mychart</title>
+</head>
+
+<body>
+  <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+  <script>
+    d3.csv("data/formatted_data.csv", function (err, rows) {
+
+      function unpack(rows, key) {
+        return rows.map(function (row) { return row[key]; });
+      }
+
+
+      var trace1 = {
+        type: "scatter",
+        mode: "lines",
+        name: 'Media City',
+        x: unpack(rows, 'date'),
+        y: unpack(rows, 'value_MC'),
+        line: { color: '#FFD93D' }
+      }
+
+  
+
+      var trace2 = {
+        type: "scatter",
+        mode: "lines",
+        name: 'LSOA_E01032685',
+        x: unpack(rows, 'date'),
+        y: unpack(rows, 'E01032685'),
+        line: { color: '#B0DAFF' }
+      }
+
+      var trace3 = {
+        type: "scatter",
+        mode: "lines",
+        name: 'LSOA_E01032686',
+        x: unpack(rows, 'date'),
+        y: unpack(rows, 'E01032686'),
+        line: { color: '#408E91' }
+      }
+
+      var trace4 = {
+        type: "scatter",
+        mode: "lines",
+        name: 'LSOA_E01032914',
+        x: unpack(rows, 'date'),
+        y: unpack(rows, 'E01032914'),
+        line: { color: '#F99B7D' }
+      }
+      var trace5 = {
+        type: "scatter",
+        mode: "lines",
+        name: 'All',
+        x: unpack(rows, 'date'),
+        y: unpack(rows, 'value_All'),
+        line: { color: '#000000' }
+      }
+
+      var data = [trace1, trace2, trace3, trace4, trace5];
+
+      var layout = {
+        title: 'Housing Price Time Series with Rangeslider for Media City and Manchester Average',
+        xaxis: {
+          autorange: true,
+          range: ['1995-01-01', '2018-10-01'],
+          rangeslider: { range: ['1995-01-01', '2018-10-01'] },
+          type: 'date'
+        },
+        yaxis: {
+          autorange: true,
+          range: [0, 1000000],
+          type: 'linear'
+        }
+      };
+
+      Plotly.newPlot('myDiv', data, layout);
+    })
+
+  </script>
+</body>
+
+</html>

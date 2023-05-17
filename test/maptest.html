@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mapbox Style Example</title>
+  <style>
+    body { margin: 0; padding: 0; }
+    #map {
+      width: 80%;
+      height: 80%;
+    }
+    #map-container {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    #map-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(0, 119, 221, 0.8), rgba(0, 170, 255, 0.8));
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+    }
+    #map-overlay h2, #map-overlay p {
+      margin: 0;
+    }
+  </style>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css" rel="stylesheet">
+</head>
+<body>
+  <div id="map-container">
+    <div id="map"></div>
+    <div id="map-overlay" onclick="hideMapOverlay()">
+      <h2>地图简介</h2>
+      <p>在这里写地图的相关介绍...</p>
+    </div>
+  </div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoieXV4aW5uaWUiLCJhIjoiY2xkMWh2eWtmMHV3czNxcW93d2ZnbXl4cSJ9.wrCpBR9hOgA59uyFFkQTqA'; // 将YOUR_ACCESS_TOKEN替换为您自己的访问令牌
+
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11', // 替换为您提供的样式URL
+      center: [-2.244644, 53.483959], // 曼彻斯特市的经纬度坐标
+      zoom: 12 // 地图缩放级别
+    });
+
+    map.on('load', function () {
+      map.addSource('lsoa-source', {
+        type: 'vector',
+        url: 'mapbox://mapbox.mapbox-streets-v8'
+      });
+
+      map.addLayer({
+        'id': 'lsoa-layer',
+        'type': 'fill',
+        'source': 'lsoa-source',
+        'source-layer': 'lsoa',
+        'paint': {
+          'fill-color': '#ff0000',
+          'fill-opacity': 0.4
+        },
+        'filter': ['in', 'LSOA11CD', 'E01032685', 'E01032686', 'E01032914']
+      });
+    });
+
+    function hideMapOverlay() {
+      var mapOverlay = document.getElementById('map-overlay');
+mapOverlay.style.display = 'none';
+}
+</script>
+
+</body>
+</html>

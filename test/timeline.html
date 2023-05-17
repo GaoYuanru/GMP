@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>Document</title>
+    <style>
+html, body {
+	 padding: 0;
+	 margin: 0;
+	 font-family: sans-serif;
+}
+ html, html * {
+	 font-family: 'Oswald', sans-serif;
+}
+ * {
+	 box-sizing: border-box;
+	 -webkit-font-smoothing: antialiased;
+	 -moz-osx-font-smoothing: grayscale;
+}
+h1 {
+	 font-size: 40px;
+	 width: 1200px;
+	 text-transform: uppercase;
+	 color: #fff;
+	 position: absolute;
+	 top: 40px;
+	 line-height: 0;
+	 left: 0px;
+}
+
+ .controls {
+	 width: 40px;
+	 height: 40px;
+	 position: absolute;
+	 left: 120px;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 cursor: pointer;
+}
+ .controls:hover:after {
+	 transform: translateX(-10px) rotate(45deg);
+}
+ .controls:hover:active:after {
+	 transform: translateX(-20px) rotate(45deg);
+	 transition: 300ms all;
+}
+ .controls:after {
+	 content: "";
+	 position: absolute;
+	 width: 16px;
+	 height: 16px;
+	 transform: rotate(45deg);
+	 border-left: 4px solid #fff;
+	 border-bottom: 4px solid #fff;
+	 transition: 500ms all;
+}
+ .controls.next {
+	 left: auto;
+	 right: 120px;
+	 transform: rotate(180deg);
+}
+ .time-line {
+	 width: 100%;
+	 height: 480px;
+	 background-color: #76797c;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 position: fixed;
+	 bottom: 0;
+}
+ .time-line * {
+	 transition: 800ms all cubic-bezier(0.23, 1, 0.32, 1);
+}
+ .time-line .dates-overflow {
+	 left: 0;
+	 width: 500vw;
+	 position: absolute;
+	 bottom: 50px;
+	 height: 50px;
+}
+ .time-line .dates-wrap {
+	 display: inline-block;
+	 position: absolute;
+	 height: 100%;
+	 left: calc(50vw - 80px);
+}
+ .time-line .dates-wrap:before, .time-line .dates-wrap:after {
+	 content: '';
+	 position: absolute;
+	 width: 160px;
+	 height: 100%;
+	 left: -1px;
+	 transform: translate(-50%, -50%);
+	 background: linear-gradient(to right, #76797c 0%, rgba(125, 185, 232, 0) 100%);
+	 z-index: 2;
+}
+ .time-line .dates-wrap:after {
+	 left: auto;
+	 right: -1px;
+	 background: linear-gradient(to left, #76797c 0%, rgba(125, 185, 232, 0) 100%);
+	 transform: translate(50%, -50%);
+}
+ .time-line .dates-wrap .date {
+	 width: 160px;
+	 position: relative;
+	 float: left;
+	 height: 100%;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 transition: 800ms all cubic-bezier(0.23, 1, 0.32, 1);
+}
+ .time-line .dates-wrap .date .date-content {
+	 visibility: hidden;
+	 position: absolute;
+	 width: 606px;
+	 height: 340px;
+	 bottom: 100%;
+	 margin-bottom: 80px;
+	 border-radius: 3px;
+	 transform-origin: 50% 100%;
+	 transform: scale(0.7);
+	 box-shadow: 0 10px 30px rgba(0, 0, 0, 0);
+}
+ .time-line .dates-wrap .date .date-content:after {
+	 content: "";
+	 position: absolute;
+	 left: 50%;
+	 width: 1px;
+	 top: 100%;
+	 margin-top: 8px;
+	 height: 60px;
+	 opacity: 0;
+	 background-color: #fff;
+	 transform: scaleY(0);
+	 transform-origin: 100% 100%;
+	 transition: 800ms all cubic-bezier(0.23, 1, 0.32, 1);
+}
+ .time-line .dates-wrap .date .date-content .date-image {
+	 width: 100%;
+	 height: 100%;
+	 
+	 background-size: cover;
+	 background-position: center;
+}
+
+ .time-line .dates-wrap .date .date-content > div {
+	 opacity: 0;
+	 transform: translateY(40px);
+}
+ .time-line .dates-wrap .date .date-content .date-text {
+	 width: 100%;
+	 height: 60px;
+	 background-color: #fff;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 color:  #76797c;
+}
+ .time-line .dates-wrap .date .date-year {
+	 opacity: 0.4;
+	 width: 100%;
+	 height: 100%;
+	 display: flex;
+	 justify-content: center;
+	 align-items: center;
+	 cursor: pointer;
+}
+ .time-line .dates-wrap .date .date-year:hover {
+	 opacity: 1 !important;
+}
+ .time-line .dates-wrap .date .date-year:hover:after {
+	 transform: scale(1) !important;
+}
+ .time-line .dates-wrap .date .date-year p {
+	 position: absolute;
+	 top: 0px;
+	 line-height: 0;
+	 color: #fff;
+	 font-size: 35px;
+	 font-weight: 900;
+	 transform: scale(0.4);
+	 z-index: 2;
+}
+ .time-line .dates-wrap .date .date-year:after {
+	 content: "";
+	 position: absolute;
+	 width: 14px;
+	 height: 14px;
+	 background-color: #fff;
+	 bottom: 100%;
+	 margin-bottom: -7px;
+	 border-radius: 50%;
+	 transform: scale(0.4);
+	 transition: 500ms all;
+}
+ .time-line .dates-wrap .date .date-year:before {
+	 content: "";
+	 position: absolute;
+	 top: 0;
+	 width: 200%;
+	 height: 1px;
+	 background-color: #fff;
+}
+ .time-line .dates-wrap .date.sibling .date-year {
+	 opacity: 0.6;
+}
+ .time-line .dates-wrap .date.sibling .date-year:after {
+	 transform: scale(0.8);
+}
+ .time-line .dates-wrap .date.sibling .date-year p {
+	 transform: scale(0.6);
+}
+ .time-line .dates-wrap .date.active + .date .date-year {
+	 opacity: 0.6;
+}
+ .time-line .dates-wrap .date.active + .date .date-year:after {
+	 transform: scale(0.8);
+}
+ .time-line .dates-wrap .date.active + .date .date-year p {
+	 transform: scale(0.6);
+}
+ .time-line .dates-wrap .date.active .date-year {
+	 opacity: 1;
+}
+ .time-line .dates-wrap .date.active .date-year:before {
+	 width: calc(200% - 11px);
+}
+ .time-line .dates-wrap .date.active .date-year:after {
+	 transform: scale(1);
+}
+ .time-line .dates-wrap .date.active .date-year p {
+	 transform: scale(1.2);
+}
+ .time-line .dates-wrap .date.active .date-content {
+	 transform: scale(1);
+	 visibility: visible;
+}
+ .time-line .dates-wrap .date.active .date-content:after {
+	 transition-delay: 200ms;
+	 opacity: 1;
+	 transform: scaleY(1);
+}
+ .time-line .dates-wrap .date.active .date-content div {
+	 transition-delay: 200ms;
+	 opacity: 1;
+	 transform: translateY(0px) scale(1);
+}
+    </style>
+</head>
+<body>
+    <div class="time-line">
+		<h1>Media City History</h1>
+		<div class="controls" data-direction="-1"></div>
+		<div class="controls next" data-direction="1"></div>
+		<div class="dates-overflow">
+	
+	
+			<div class="dates-wrap">
+				<div class="date active">
+					<div class="date-year">
+						<p>1887</p>
+					</div>
+					<div class="date-content">
+	
+	
+						<div class="date-image" style="background-image: url('data/1887.jpg');"></div>
+	
+						<div class="date-text">Construction of the Manchester Ship Canal began.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>1894</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/1894.jpg');"></div>
+						<div class="date-text">Queen Victoria opened the docks upon completion of the Manchester Ship Canal.
+						</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>1927</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/1927.jpg');"></div>
+						<div class="date-text">MSC Dock Offices opened on Trafford Road.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>1987</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/1987.jpg');"></div>
+						<div class="date-text">The Ship Canal Company is acquired by the Peel Group.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2000</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2000.jpg');"></div>
+						<div class="date-text">The Lowry Arts Centre Officially Opened by Queen Elizabeth II.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2002</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2002.jpg');"></div>
+						<div class="date-text">Imperial War Museum North opens.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2010</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2010.jpg');"></div>
+						<div class="date-text">ITV signs agreement to move the company’s Manchester base to MediaCity.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2012</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2012.jpg');"></div>
+						<div class="date-text">Queen Elizabeth II, accompanied by the Duke of Edinburgh, officially open
+							MediaCity.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2013</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2013.jpg');"></div>
+						<div class="date-text">Coronation Street’s production centre and famous Cobbles open for filming.
+						</div>
+					</div>
+				</div>
+	
+				<div class="date">
+					<div class="date-year">
+						<p>2015</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2015.jpg');"></div>
+						<div class="date-text">Legal and General Capital secures a 50% stake</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2018</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2018.jpg');"></div>
+						<div class="date-text">Kellogg’s moves its Northern HQ to MediaCity.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2020</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2020.jpg');"></div>
+						<div class="date-text">MediaCity named as the first Wired Certified Neighbourhood in Europe.</div>
+					</div>
+				</div>
+				<div class="date">
+					<div class="date-year">
+						<p>2021</p>
+					</div>
+					<div class="date-content">
+						<div class="date-image" style="background-image: url('data/2021.jpg');"></div>
+						<div class="date-text">MediaCity’s buildings become the first in the UK to achieve net zero carbon
+							status.</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+      <script>
+        $(window).on("load", function() {
+  var dateWidth = $(".date").width(),
+    activeDate = 0,
+    noDates = $(".date").length;
+  
+  function changeDate(a) {
+    if (a < 0) {
+      activeDate = 0;
+      return;
+    }
+
+    if (a > noDates - 1) {
+      activeDate = noDates - 1;
+      return;
+    }
+
+    $(".date")
+      .removeClass("active sibling");
+    
+    $(".date:nth-child(" + (a + 1) + ")")
+      .addClass("active");
+
+    $(".date.active")
+      .prev("div")
+      .addClass("sibling");
+
+    $(".dates-wrap").css(
+      "transform",
+      "translateX(" + -dateWidth * a + "px)"
+    );
+  }
+  
+
+  
+  $(".date").on('click', function(){
+     var chosen = $(this).index();
+    
+    if (chosen === activeDate) {
+      return;
+    }
+    
+    activeDate = chosen;
+    changeDate(activeDate);
+  });
+
+  $(".controls").on("click", function() {
+    var direction = parseInt($(this).attr("data-direction"), 10);
+
+    activeDate += direction;  
+    changeDate(activeDate);
+
+  });
+});
+var imageUrl = $(".date:nth-child(" + (a + 1) + ") .date-image").attr("data-image-url");
+$(".date-image").css("background-image", "url(" + imageUrl + ")");
+
+      </script>
+</body>
+</html>
