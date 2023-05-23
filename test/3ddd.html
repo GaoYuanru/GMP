@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>CesiumJS 3D Tiles Places API Integration Demo</title>
+  <script src="https://cesiumjs.org/releases/1.84/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesiumjs.org/releases/1.84/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+</head>
+<body>
+  <div id="cesiumContainer">
+    <div>
+      <select id="coordinateSelect">
+        <option value="">Select a coordinate</option>
+        <option value="-2.2981,53.4719,220">Manchester Media City</option>
+        <option value="-2.26843,53.45789,87">Clifford</option>
+        <!-- Add more options for other coordinates -->
+      </select>
+      <button onclick="flyToSelectedCoordinate()">Go to Coordinate</button>
+      <button onclick="startAutoRotate()">Start Auto Rotate</button>
+      <button onclick="stopAutoRotate()">Stop Auto Rotate</button>
+      <button onclick="startMarkerMode()">Add Marker</button>
+      <button onclick="rotateAroundMarker()">Rotate Around Marker</button>
+      <button onclick="drawPolygon()">Drawing</button>
+    </div>
+  </div>
+
+  <script>
+    // Enable simultaneous requests.
+    Cesium.RequestScheduler.requestsByServer["tile.googleapis.com:443"] = 18;
+
+    // Create the viewer.
+    const viewer = new Cesium.Viewer("cesiumContainer", {
+      imageryProvider: false,
+      baseLayerPicker: false,
+      requestRenderMode: true,
+      geocoder: false,
+    });
+
+    // Add 3D Tiles tileset.
+    const tileset = viewer.scene.primitives.add(
+      new Cesium.Cesium3DTileset({
+        url: "https://tile.googleapis.com/v1/3dtiles/root.json?key=AIzaSyA4-eUYvAnbB_8G8U9grjv87XF0dt4bP5E",
+        // This property is required to display attributions as required.
+        showCreditsOnScreen: true,
+      })
+    );
+
+    var polygonEntity;
+
+    function drawPolygon() {
+      var polygon = viewer.entities.add({
+        name: "Green extruded polygon",
+        polygon: {
+          hierarchy: Cesium.Cartesian3.fromDegreesArray([
+            -2.2991, 53.4722,
+            -2.2983, 53.4725,
+            -2.2998, 53.4742,
+            -2.3014, 53.4733
+          ]),
+          extrudedHeight: 100.0,
+          material: Cesium.Color.YELLOW.withAlpha(0.5),
+          closeTop: false,
+          closeBottom: false,
+        },
+      });
+
+      if (polygonEntity) {
+        viewer.entities.remove(polygonEntity);
+      }
+
+      polygonEntity = polygon;
+    }
+
+    // Initially fly to Manchester Media City
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(-2.2981, 53.4719, 220),
+      orientation: {
+        heading: Cesium.Math.toRadians(-45),
+        pitch: Cesium.Math.toRadians(-45),
+        roll: Cesium.Math.toRadians(0)
+      }
+    });
+
+    var markerMode = false;
+    var markerEntity;
+    var markerPosition;
+
+    function startMarkerMode() {
+      markerMode = true;
+      viewer.cesiumWidget.screenSpaceEventHandler.setInputAction(handleMouseClick, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    }
+
+    function handleMouseClick(click) {
+      if (markerMode) {
+        var ray = viewer.camera.getPickRay(click.position);
+        var cartesian = viewer.scene.globe.pick(ray, viewer.scene);
+        if (cartesian) {
+          markerPosition = cartesian;
+          markerEntity = viewer.entities.add({
+            position: cartesian,
+            billboard: {
+              image: 'data/R.png',
+              verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+              scale: 0.05, // Adjust the scale value to resize the image
+            },
+          });
+
+          markerMode = false;
+          viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        }
+      }
+    }
+
+    function rotateAroundMarker() {
+      var rotationAngle = Cesium.Math.toRadians(1);
+      var interval = 100;
+
+      var rotateInterval = setInterval(function () {
+        var cameraPosition = viewer.camera.positionWC;
+        var vectorToMarker = Cesium.Cartesian3.subtract(markerPosition, cameraPosition, new Cesium.Cartesian3());
+        var distanceToMarker = Cesium.Cartesian3.magnitude(vectorToMarker);
+
+        var heading = Math.acos(vectorToMarker.x / distanceToMarker);
+        if (vectorToMarker.y < 0) {
+          heading = Cesium.Math.TWO_PI - heading;
+        }
+        var pitch = Math.asin(vectorToMarker.z / distanceToMarker);
+        var roll = 0;
+
+        viewer.camera.lookAt(markerPosition, new Cesium.HeadingPitchRange(heading + rotationAngle, pitch, distanceToMarker), roll);
+
+        rotationAngle += Cesium.Math.toRadians(1);
+      }, interval);
+
+      setTimeout(function () {
+        clearInterval(rotateInterval);
+      }, 5000);
+    }
+
+    function flyToSelectedCoordinate() {
+      var select = document.getElementById("coordinateSelect");
+      var coordinate = select.value.split(",");
+      var longitude = parseFloat(coordinate[0]);
+      var latitude = parseFloat(coordinate[1]);
+      var height = parseFloat(coordinate[2]);
+
+      if (isNaN(longitude) || isNaN(latitude) || isNaN(height)) {
+        console.log("Invalid coordinate selected.");
+        return;
+      }
+
+      viewer.camera.flyTo({
+        destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+        orientation: {
+          heading: Cesium.Math.toRadians(0),
+          pitch: Cesium.Math.toRadians(-45),
+          roll: Cesium.Math.toRadians(0)
+        }
+      });
+    }
+
+    var rotateInterval;
+
+    function startAutoRotate() {
+      var rotationAngle = Cesium.Math.toRadians(1);
+      var interval = 100;
+
+      rotateInterval = setInterval(function () {
+        var heading = viewer.camera.heading;
+        heading += rotationAngle;
+        viewer.camera.setView({
+          orientation: {
+            heading: heading,
+            pitch: viewer.camera.pitch,
+            roll: viewer.camera.roll
+          }
+        });
+      }, interval);
+    }
+
+    function stopAutoRotate() {
+      clearInterval(rotateInterval);
+    }
+  </script>
+</body>
+</html>
