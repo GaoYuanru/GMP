@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>Display a map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js'></script>
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .myDiv {
+            position: relative;
+            /* 或者 position: relative; */
+            height: 50%;
+            bottom: 0;
+            left: 0;
+            /* 其他样式属性 */
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+
+        .map-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            width: 17%;
+            top: 0;
+            left: 0;
+            padding: 10px;
+        }
+
+        .chart-overlay {
+            font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+            position: absolute;
+            height: 30%;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .map-overlay .map-overlay-inner {
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
+            border-radius: 3px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .map-overlay table {
+            border: none;
+            width: 100%;
+        }
+
+        .map-overlay h2 {
+            line-height: 24px;
+            display: block;
+            margin: 0 0 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='map'></div>
+
+
+    <div class='map-overlay'>
+        <div class='map-overlay-inner'>
+            <h2 id="laname">Hover over a local authority</h2>
+        </div>
+
+    </div>
+    <div class="chart-overlay">
+        <button id="btn2007" onclick="showLayer('LocalAuthorities')">Show LocalAuthorities</button>
+<button id="btn2008" onclick="showLayer('LocalAuthorities2008')">Show LocalAuthorities2008</button>
+
+        <div id="myDiv">
+
+        </div>
+    </div>
+
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZ3lyMDYxNyIsImEiOiJjbGQxbGthOHgwZHVsM29tcHhnMDZnazRjIn0.uFXNmdK5Gydwz8talIxsYw'; // Put your Mapbox Public Access token here
+
+        // Load a new map in the 'map' HTML div
+        var map = new mapboxgl.Map({
+            container: 'map', // container id
+            style: 'mapbox://styles/gyr0617/cli12cqo602ds01qu47ko3vq3', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 8 // starting zoom
+        });
+
+
+        map.on('load', function () {
+
+
+
+            map.addLayer({                  //Add the fill layer. It is not visible (opacity 0) and is used only as the basis of the hover selection
+                id: 'LocalAuthorities',
+                type: 'fill',
+                source: {
+                    type: 'vector',
+                    url: 'mapbox://gyr0617.cm1j48yx' // Your Mapbox tileset Map ID
+                },
+                'source-layer': 'newhousingprice-ayj60u', // name of tilesets
+                'layout': {
+                    'visibility': 'visible'
+                },
+                paint: {
+                    'fill-color': '#fff',
+                    'fill-opacity': 0
+                }
+            });
+
+
+
+
+         
+            map.addLayer({
+                id: 'LocalAuthorities2008',
+                type: 'fill',
+                source: {
+                    type: 'vector',
+                    url: 'mapbox://gyr0617.cm1j48yx' // Your Mapbox tileset Map ID
+                },
+                'source-layer': 'newhousingprice-ayj60u',
+                paint: {
+                    'fill-color': '#fff',
+                    'fill-opacity': 0
+                },
+                'filter': ['==', '2008', true],
+            });
+        });
+
+
+
+        // ...
+
+        map.on('mousemove', function (e) {
+            var la = map.queryRenderedFeatures(e.point, {
+                layers: ['LocalAuthorities']
+            });
+
+            if (la.length == 1) {
+                var properties = la[0].properties;
+
+                // Get the property values for each year
+                var years = ['2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018'];
+                var prices = years.map(function (year) {
+                    return properties[year];
+                });
+
+                // Create the time series trace
+                var trace = {
+                    type: "scatter",
+                    mode: "lines",
+                    name: properties.wd11nm,
+                    x: years,
+                    y: prices,
+                    line: { color: '#FFD93D' }
+                };
+
+                // Create the data array
+                var data = [trace];
+
+                // Create the layout for the time series plot
+                var layout = {
+                    width: 800, // 指定图表的宽度，单位为像素
+                    height: 200, // 指定图表的高度，单位为像素
+                    title: 'Housing Price Time Series for ' + properties.wd11nm,
+                    xaxis: {
+                        title: 'Year'
+                    },
+                    yaxis: {
+                        title: 'Price',
+                        range: [50000, 300000],
+                    }
+                };
+
+                // Update the plot with new data and layout
+                Plotly.newPlot('myDiv', data, layout, { responsive: true });
+            }
+        });
+
+            // ...
+
+            function showLayer(layerId) {
+    if (map.getLayer(layerId)) {
+        var visibility = map.getLayoutProperty(layerId, 'visibility');
+        if (visibility === 'visible') {
+            map.setLayoutProperty(layerId, 'visibility', 'none');
+        } else {
+            map.setLayoutProperty(layerId, 'visibility', 'visible');
+        }
+    }
+}
+
+
+        
+    </script>
+
+</body>
+
+</html>
