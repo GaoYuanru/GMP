@@ -119,8 +119,10 @@
             right: 0;
             transform: translateY(-50%);
             background-color: #b0f2f7;
-            width: 200px;
+            width: 250px;
+            height: 550px;
             padding: 10px;
+            font-size: medium;
             box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
             opacity: 0.5;
             /* 设置透明度为60% */
@@ -131,12 +133,12 @@
         }
 
         #icon {
-            display: none;
             position: fixed;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            cursor: pointer;
+    top: 20px;
+    right: 0;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: block; /* Add this line to make the icon visible */
         }
 
         #closeButton {
@@ -153,11 +155,13 @@
 <body>
 
     <div id='map'></div>
-
+    <div id="icon">
+        <img src="data/icon.jpeg" alt="图标">
+    </div>
 
     <div class='map-overlay'>
         <div class='map-overlay-inner'>
-            <h2 id="laname">Housing Price Time Series Manchester city Centre
+            <h2 id="laname">Housing Price Time Series in Manchester Central Area
                 </br>(Data Source: <a href="https://www.manchester.gov.uk/info/200088/statistics_and_intelligence/7611/intelligence_hub">Manchester City Council</a>)
             </h2>
         </div>
@@ -168,13 +172,11 @@
     </div>
     <div id="floatingBox">
         <div id="content">
-            <h2>xxx</h2>
-            <p>介绍内容...</p>
+            <h2>Analysis</h2>
+            <p>we can observe that the average housing prices have steadily increased since 2009, except for a slight decline in 2008. Comparing the individual wards with the overall average house price, it can be noted that the prices are higher in wards such as Chorlton, Priory, and Whalley Range, especially Chorlton. These wards are located near Media City. Wards with prices lower than the overall average are found in the vicinity of the city centre, such as Gorton North. Compared to the Ordsall ward, which is in the centre of Media City, the city centre ward has larger price fluctuations and a faster price increase. In general, the wards southwest of Media City have relatively stable prices and are generally higher than the average house price in the entire Manchester centre, while the eastern and northern parts of the city centre experience larger price fluctuations and are mostly below the average level.</p>
             <span id="closeButton">×</span>
         </div>
-        <div id="icon">
-            <img src="icon.png" alt="图标">
-        </div>
+        
     </div>
 
 
@@ -198,6 +200,12 @@
             zoom: 10 // starting zoom
         });
 
+        map.on('load', function () {
+    // 创建缩放控件
+    var nav = new mapboxgl.NavigationControl();
+    // 添加缩放控件到地图
+    map.addControl(nav, 'bottom-right');
+});
 
         map.on('load', function () {
 
@@ -272,9 +280,17 @@
                     y: prices,
                     line: { color: '#146C94' }
                 };
-
+                var averge = ['148243.2','142428.5667', '129214.4667','130435.2333', '128671.2','132010.1333',	'135483.4667', '141144.7333','149976.9333','163782.9','177798.4','193815.5625']
+var trace1 ={
+    type: "scatter",
+                    mode: "lines",
+                    name: 'Centre Average',
+                    x: years,
+                    y: averge,
+                    line: { color: '#F79327' }
+}
                 // Create the data array
-                var data = [trace];
+                var data = [trace,trace1];
 
                 // Create the layout for the time series plot
                 var layout = {
@@ -346,24 +362,25 @@
 
 
         });
-        // 获取悬浮框和图标元素
-        var floatingBox = document.getElementById('floatingBox');
-        var icon = document.getElementById('icon');
+// Get the floating box and icon elements
+var floatingBox = document.getElementById('floatingBox');
+var icon = document.getElementById('icon');
 
-        // 获取关闭按钮元素
-        var closeButton = document.getElementById('closeButton');
+// Get the close button element
+var closeButton = document.getElementById('closeButton');
 
-        // 关闭按钮点击事件
-        closeButton.addEventListener('click', function () {
-            floatingBox.style.display = 'none';
-            icon.style.display = 'block';
-        });
+// Close button click event
+closeButton.addEventListener('click', function () {
+    floatingBox.style.display = 'none';
+});
 
-        // 图标点击事件
-        icon.addEventListener('click', function () {
-            floatingBox.style.display = 'block';
-            icon.style.display = 'none';
-        });
+// Icon click event
+icon.addEventListener('click', function () {
+    if (floatingBox.style.display === 'none') {
+        floatingBox.style.display = 'block';
+    }
+});
+
 
 
 

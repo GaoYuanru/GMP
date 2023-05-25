@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <title>Document</title>
+    <style>
+          body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map1,
+        #map2,
+        #map3,
+        #map4,
+        #map5 {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        #buttonContainer {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .mapButton {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id='map1'></div>
+    <div id='map2'></div>
+    <div id='map3'></div>
+    <div id='map4'></div>
+    <div id='map5'></div>
+
+    <div id="buttonContainer">
+        <label for="mapSelection">Select a Map:</label>
+        <select id="mapSelection">
+            <option value="map1">Map 1</option>
+            <option value="map2">Map 2</option>
+            <option value="map3">Map 3</option>
+            <option value="map4">Map 4</option>
+            <option value="map5">Map 5</option>
+        </select>
+
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZ3lyMDYxNyIsImEiOiJjbGQxbGthOHgwZHVsM29tcHhnMDZnazRjIn0.uFXNmdK5Gydwz8talIxsYw'; // Put your Mapbox Public Access token here
+
+        // Load a new map in the 'map1' HTML div
+        var map1 = new mapboxgl.Map({
+            container: 'map1', // container id
+            style: 'mapbox://styles/gyr0617/cli12cqo602ds01qu47ko3vq3', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 8 // starting zoom
+        });
+
+        // Load a new map in the 'map2' HTML div
+        var map2 = new mapboxgl.Map({
+            container: 'map2', // container id
+            style: 'mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 8 // starting zoom
+        });
+
+        // Load a new map in the 'map3' HTML div
+        var map3 = new mapboxgl.Map({
+            container: 'map3', // container id
+            style: 'mapbox://styles/gyr0617/clhr2txoi01y701pghoip70q7', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 8 // starting zoom
+        });
+        // Load a new map in the 'map4' HTML div
+        var map4 = new mapboxgl.Map({
+            container: 'map4', // container id
+            style: 'mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 8 // starting zoom
+        });
+        // Load a new map in the 'map5' HTML div
+        var map5 = new mapboxgl.Map({
+            container: 'map5', // container id
+            style: 'mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 8 // starting zoom
+        });
+
+        // Show the initial map
+        document.getElementById('map1').style.display = 'block';
+
+        // Button click event handler
+        var mapSelection = document.getElementById('mapSelection');
+
+        mapSelection.addEventListener('change', function () {
+            var selectedMap = this.value;
+            document.getElementById('map1').style.display = (selectedMap === 'map1') ? 'block' : 'none';
+            document.getElementById('map2').style.display = (selectedMap === 'map2') ? 'block' : 'none';
+            document.getElementById('map3').style.display = (selectedMap === 'map3') ? 'block' : 'none';
+            document.getElementById('map4').style.display = (selectedMap === 'map4') ? 'block' : 'none';
+            document.getElementById('map5').style.display = (selectedMap === 'map5') ? 'block' : 'none';
+        });
+    </script>
+</body>
+
+</html>
