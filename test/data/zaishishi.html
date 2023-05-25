@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .map-container {
+            flex: 1;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="map-container">
+        <h2 id="laname">Hover over a local authority</h2>
+        <div id="map1" class="map"></div>
+        <div id="mapSelection1">
+            <label for="mapSelection">Select a Map:</label>
+            <select id="mapSelection">
+                <option value="map2007">Map 2007</option>
+                <option value="map2008">Map 2008</option>
+                <option value="map2009">Map 2009</option>
+                <option value="map2010">Map 2010</option>
+                <option value="map2011">Map 2011</option>
+                <option value="map2012">Map 2012</option>
+                <option value="map2013">Map 2013</option>
+                <option value="map2014">Map 2014</option>
+                <option value="map2015">Map 2015</option>
+                <option value="map2016">Map 2016</option>
+                <option value="map2017">Map 2017</option>
+                <option value="map2018">Map 2018</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="map-container">
+        <div id="map2" class="map"></div>
+        <div id="mapSelection2">
+            <label for="mapSelection">Select a Map:</label>
+            <select id="mapSelection">
+                <option value="map2007">Map 2007</option>
+                <option value="map2008">Map 2008</option>
+                <option value="map2009">Map 2009</option>
+                <option value="map2010">Map 2010</option>
+                <option value="map2011">Map 2011</option>
+                <option value="map2012">Map 2012</option>
+                <option value="map2013">Map 2013</option>
+                <option value="map2014">Map 2014</option>
+                <option value="map2015">Map 2015</option>
+                <option value="map2016">Map 2016</option>
+                <option value="map2017">Map 2017</option>
+                <option value="map2018">Map 2018</option>
+            </select>
+        </div>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZ3lyMDYxNyIsImEiOiJjbGQxbGthOHgwZHVsM29tcHhnMDZnazRjIn0.uFXNmdK5Gydwz8talIxsYw'; // Put your Mapbox Public Access token here
+
+        // Load a new map in the 'map1' HTML div
+        var map1 = new mapboxgl.Map({
+            container: 'map1', // container id
+            style: 'mapbox://styles/gyr0617/cli2m5okt02k601pgc7ri0ay7', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 10 // starting zoom
+        });
+
+        // Load a new map in the 'map2' HTML div
+        var map2 = new mapboxgl.Map({
+            container: 'map2', // container id
+            style: 'mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 10 // starting zoom
+        });
+
+        // Variable to hold the hover state
+        var hoveredStateId = null;
+
+        // Map selection event handler for map1
+        var mapSelection1 = document.getElementById('mapSelection1');
+
+        mapSelection1.addEventListener('change', function () {
+            var selectedMap = this.querySelector('select').value;
+
+            // Handle map selection for map1
+            // Example: Change the map style based on the selected map
+            if (selectedMap === 'map2007') {
+                map1.setStyle('mapbox://styles/gyr0617/cli2m5okt02k601pgc7ri0ay7');
+            } else if (selectedMap === 'map2008') {
+                map1.setStyle('mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx');
+            } else if (selectedMap === 'map2009') {
+                map1.setStyle("mapbox://styles/gyr0617/cli1wde7902gy01pn4ye1dfjg");
+            } else if (selectedMap === 'map2010') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2khj1302i901qu6dynauu9");
+            }
+            // Add more conditions for other maps if needed
+        });
+
+        // Map selection event handler for map2
+        var mapSelection2 = document.getElementById('mapSelection2');
+
+        mapSelection2.addEventListener('change', function () {
+            var selectedMap = this.querySelector('select').value;
+
+            // Handle map selection for map2
+            // Example: Change the map style based on the selected map
+            if (selectedMap === 'map2007') {
+                map2.setStyle('mapbox://styles/gyr0617/cli2m5okt02k601pgc7ri0ay7');
+            } else if (selectedMap === 'map2008') {
+                map2.setStyle('mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx');
+            } else if (selectedMap === 'map2009') {
+                map2.setStyle("mapbox://styles/gyr0617/cli1wde7902gy01pn4ye1dfjg");
+            } else if (selectedMap === 'map2010') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2khj1302i901qu6dynauu9");
+            }
+            // Add more conditions for other maps if needed
+        });
+
+        // Add hover functionality to map1
+        map1.on('load', function () {
+            // Add a source for the hover layer
+            map1.addSource('hover-source', {
+                type: 'geojson',
+                data: 'data/newhousingprice.geojson' // Path to your nn.geojson file
+            });
+
+            // Add a layer to display the hovered state
+            map1.addLayer({
+                id: 'hover-layer',
+                type: 'fill',
+                source: 'hover-source',
+                paint: {
+                    'fill-color': '#627BC1',
+                    'fill-opacity': 0.6
+                },
+                filter: ['==', 'wd11nm', '']
+            });
+
+            // Change the cursor to a pointer when hovering over the states layer
+            map1.on('mouseenter', 'hover-layer', function () {
+                map1.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves
+            map1.on('mouseleave', 'hover-layer', function () {
+                map1.getCanvas().style.cursor = '';
+            });
+
+            // Listen for the mousemove event and update the feature state for the hovered state
+            map1.on('mousemove', 'hover-layer', function (e) {
+                if (e.features.length > 0) {
+                    if (hoveredStateId) {
+                        map1.setFeatureState({ source: 'hover-source', id: hoveredStateId }, { hover: false });
+                    }
+                    hoveredStateId = e.features[0].id;
+                    map1.setFeatureState({ source: 'hover-source', id: hoveredStateId }, { hover: true });
+                }
+            });
+
+            // Reset the state to normal when the mouse leaves the map
+            map1.on('mouseleave', function () {
+                if (hoveredStateId) {
+                    map1.setFeatureState({ source: 'hover-source', id: hoveredStateId }, { hover: false });
+                }
+                hoveredStateId = null;
+            });
+        });
+
+        // Add hover functionality to map2
+        map2.on('load', function () {
+            // Add a source for the hover layer
+            map2.addSource('hover-source', {
+                type: 'geojson',
+                data: 'data/newhousingprice.geojson' // Path to your nn.geojson file
+            });
+
+            // Add a layer to display the hovered state
+            map2.addLayer({
+                id: 'hover-layer',
+                type: 'fill',
+                source: 'hover-source',
+                paint: {
+                    'fill-color': '#627BC1',
+                    'fill-opacity': 0.6
+                },
+                filter: ['==', 'wd11nm', '']
+            });
+
+            // Change the cursor to a pointer when hovering over the states layer
+            map2.on('mouseenter', 'hover-layer', function () {
+                map2.getCanvas().style.cursor = 'pointer';
+            });
+
+            // Change it back to a pointer when it leaves
+            map2.on('mouseleave', 'hover-layer', function () {
+                map2.getCanvas().style.cursor = '';
+            });
+
+            // Listen for the mousemove event and update the feature state for the hovered state
+            map2.on('mousemove', 'hover-layer', function (e) {
+                if (e.features.length > 0) {
+                    if (hoveredStateId) {
+                        map2.setFeatureState({ source: 'hover-source', id: hoveredStateId }, { hover: false });
+                    }
+                    hoveredStateId = e.features[0].id;
+                    map2.setFeatureState({ source: 'hover-source', id: hoveredStateId }, { hover: true });
+                }
+            });
+
+            // Reset the state to normal when the mouse leaves the map
+            map2.on('mouseleave', function () {
+                if (hoveredStateId) {
+                    map2.setFeatureState({ source: 'hover-source', id: hoveredStateId }, { hover: false });
+                }
+                hoveredStateId = null;
+            });
+        });
+    </script>
+</body>
+
+</html>

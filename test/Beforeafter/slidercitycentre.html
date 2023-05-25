@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <title>Document</title>
+    <style>
+        body, div, p{
+	margin: 0;
+	padding: 0;
+	font-family: Helvetica, sans-serif;
+}
+			
+	#before-after{
+		position: relative;
+		width: 1202px;
+		height: 900px;
+		border: 2px solid grey;
+		margin: 50px auto 0px;;
+	}
+			
+		.view{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+				
+		  .view-before{
+			  z-index: 100;
+		  }
+				
+      .view-after{
+				z-index: 200;
+			}
+			
+			#dragme{
+				position: absolute;
+				width: 5px;
+				height: 100%;
+				top: 0px;
+				left: 0px;
+				background-color: black;
+				cursor: pointer;
+				z-index: 300;
+			}
+			
+			/*
+				Controls
+			*/
+			
+		ul{
+			text-align: center;
+			margin-top: 50px;
+		}
+			
+			ul li{
+				list-style: none;
+				display: inline-block;
+				font-size: 17px;
+				cursor: pointer;
+				margin: 0px 20px 0px 20px
+			}
+    </style>
+</head>
+<body>
+    <!-- Adding TweenMax (or TweenLite+CSSPLugin) and Draggable -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/utils/Draggable.min.js"></script>
+
+<!-- The actual markup -->
+<ul id="controls">
+	<li class="to-start">Before</li>
+	<li class="to-middle">Compare</li>
+	<li class="to-end">After</li>
+</ul>
+		
+<div id="before-after">
+	<div class="view view-after"><img src="data/deansgate-now.jpg" /></div>
+	<div class="view view-before"><img src="data/before.jpg" /></div>
+	<div id="dragme"></div>
+</div>
+<script>
+    $(function(){
+				
+  /*
+    Dependencies : TweenMax and Draggable
+    Images by Ivaylo Yovchev ( http://www.ivayloyovchev.com/ )
+    
+    Test on touch device @ http://cloud.bassta.bg/before-after.html
+  */
+  
+  
+  var $dragMe			    = $("#dragme");
+  var $beforeAfter		= $("#before-after");
+  var $viewAfter		  = $(".view-after");
+				
+  Draggable.create($dragMe, {
+	  type:"left",
+	  bounds: $beforeAfter,
+	  onDrag:updateImages
+  });
+			   			    
+  function updateImages(){
+	  TweenLite.set($viewAfter, {width: $dragMe.css("left") });		//or this.x if only dragging
+  }
+			   
+  //Intro Animation
+  animateTo(350);
+			   
+  //Externall nav
+  $(".to-start").on("click", function(){
+	  animateTo(0);
+  });
+			   
+  $(".to-middle").on("click", function(){
+	  animateTo(400);  
+  });
+			   
+  $(".to-end").on("click", function(){
+	  animateTo(600);
+  });
+			   
+  function animateTo(_left){
+	  TweenLite.to( $dragMe, 1, {left: _left, onUpdate: updateImages });
+  }
+  
+  //V2 Click added
+  $beforeAfter.on("click", function(event){			   		
+	  var eventLeft = event.clientX - $beforeAfter.offset().left;
+	  animateTo(eventLeft);
+  });
+    
+				
+});//end jQuery wrapper
+</script>
+</body>
+</html>
