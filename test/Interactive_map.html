@@ -20,8 +20,9 @@
             position: relative;
             /* 或者 position: relative; */
             height: 50%;
+            margin: 0 auto;
             bottom: 0;
-            left: 0;
+
             /* 其他样式属性 */
         }
 
@@ -50,7 +51,9 @@
             bottom: 0;
         }
 
+
         .map-overlay .map-overlay-inner {
+            width: 500px;
             background-color: #fff;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.20);
             border-radius: 3px;
@@ -64,9 +67,85 @@
         }
 
         .map-overlay h2 {
+            width: 500px;
             line-height: 24px;
             display: block;
             margin: 0 0 10px;
+        }
+
+        .pulse:hover,
+        .pulse:focus {
+            animation: pulse 1s;
+            box-shadow: 0 0 0 2em transparent;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 var(--hover);
+            }
+        }
+
+
+        .pulse {
+            --color: rgb(52, 230, 183);
+            --hover: #b9f3d8;
+        }
+
+        button {
+            color: #0b5327;
+            /* 设置文字颜色为黑色 */
+            transition: 0.25s;
+        }
+
+        button:hover,
+        button:focus {
+            border-color: var(--hover);
+            color: #fff;
+        }
+
+        button {
+            background: none;
+            border: 2px solid;
+            font: inherit;
+            line-height: 1;
+            margin: 0.5em;
+            padding: 1em 2em;
+
+        }
+
+        #floatingBox {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            background-color: #b0f2f7;
+            width: 200px;
+            padding: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            opacity: 0.5;
+            /* 设置透明度为60% */
+        }
+
+        #content {
+            display: block;
+        }
+
+        #icon {
+            display: none;
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        #closeButton {
+            margin-top: 10px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 18px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -78,13 +157,29 @@
 
     <div class='map-overlay'>
         <div class='map-overlay-inner'>
-            <h2 id="laname">Hover over a local authority</h2>
+            <h2 id="laname">Housing Price Time Series Manchester city Centre
+                </br>(Data Source: <a href="https://www.manchester.gov.uk/info/200088/statistics_and_intelligence/7611/intelligence_hub">Manchester City Council</a>)
+            </h2>
         </div>
+        <button class="pulse" id="timeseriescharts">Timeseries</button><button class="pulse"
+            id="housingpricecompare">Yearly Compring</button>
+
 
     </div>
+    <div id="floatingBox">
+        <div id="content">
+            <h2>xxx</h2>
+            <p>介绍内容...</p>
+            <span id="closeButton">×</span>
+        </div>
+        <div id="icon">
+            <img src="icon.png" alt="图标">
+        </div>
+    </div>
+
+
+
     <div class="chart-overlay">
-        <button id="btn2007" onclick="showLayer('LocalAuthorities')">Show LocalAuthorities</button>
-<button id="btn2008" onclick="showLayer('LocalAuthorities2008')">Show LocalAuthorities2008</button>
 
         <div id="myDiv">
 
@@ -100,7 +195,7 @@
             container: 'map', // container id
             style: 'mapbox://styles/gyr0617/cli12cqo602ds01qu47ko3vq3', // stylesheet location
             center: [-2.2426, 53.4808], // starting position [lng, lat]
-            zoom: 8 // starting zoom
+            zoom: 10 // starting zoom
         });
 
 
@@ -126,23 +221,28 @@
             });
 
 
-
-
-         
-            map.addLayer({
-                id: 'LocalAuthorities2008',
-                type: 'fill',
+            map.addLayer({                  // Add the line highlight layer. This layer has a filter, which initially is empty.
+                id: 'lahighlight',
+                type: 'line',
                 source: {
                     type: 'vector',
-                    url: 'mapbox://gyr0617.cm1j48yx' // Your Mapbox tileset Map ID
+                    url: 'mapbox://gyr0617.cm1j48yx'// Your Mapbox tileset Map ID
                 },
-                'source-layer': 'newhousingprice-ayj60u',
+                'source-layer': 'newhousingprice-ayj60u', // name of tilesets
+                'layout': {
+                    'visibility': 'visible'
+                },
                 paint: {
-                    'fill-color': '#fff',
-                    'fill-opacity': 0
+                    'line-color': '#FEFF86',
+                    'line-width': 4
                 },
-                'filter': ['==', '2008', true],
+                filter: ['==', 'wd11nm', true]
             });
+
+
+
+
+
         });
 
 
@@ -170,7 +270,7 @@
                     name: properties.wd11nm,
                     x: years,
                     y: prices,
-                    line: { color: '#FFD93D' }
+                    line: { color: '#146C94' }
                 };
 
                 // Create the data array
@@ -178,11 +278,19 @@
 
                 // Create the layout for the time series plot
                 var layout = {
-                    width: 800, // 指定图表的宽度，单位为像素
-                    height: 200, // 指定图表的高度，单位为像素
-                    title: 'Housing Price Time Series for ' + properties.wd11nm,
+                    width: 1200, // 指定图表的宽度，单位为像素
+                    height: 300, // 指定图表的高度，单位为像素
+                    margin: {
+                        l: 50, // 左边距
+                        r: 50, // 右边距
+
+                    },
+                    title: 'Housing Price Time Series for ' + properties.wd11nm + ' (Ward)',
                     xaxis: {
-                        title: 'Year'
+                        title: 'Year',
+                        range: ['2007-01-01', '2018-10-01'],
+                        rangeslider: { range: ['2007-01-01', '2018-10-01'] },
+                        type: 'date'
                     },
                     yaxis: {
                         title: 'Price',
@@ -195,21 +303,70 @@
             }
         });
 
-            // ...
+        // ...
 
-            function showLayer(layerId) {
-    if (map.getLayer(layerId)) {
-        var visibility = map.getLayoutProperty(layerId, 'visibility');
-        if (visibility === 'visible') {
-            map.setLayoutProperty(layerId, 'visibility', 'none');
-        } else {
-            map.setLayoutProperty(layerId, 'visibility', 'visible');
+        function showLayer(layerId) {
+            if (map.getLayer(layerId)) {
+                var visibility = map.getLayoutProperty(layerId, 'visibility');
+                if (visibility === 'visible') {
+                    map.setLayoutProperty(layerId, 'visibility', 'none');
+                } else {
+                    map.setLayoutProperty(layerId, 'visibility', 'visible');
+                }
+            }
         }
-    }
-}
+        var timeserieschartsButton = document.getElementById('timeseriescharts');
+        var housingpricecompareButton = document.getElementById('housingpricecompare');
+
+        timeserieschartsButton.addEventListener('click', function () {
+            window.location.href = 'Interactive_map.html';
+        });
+
+        housingpricecompareButton.addEventListener('click', function () {
+            window.location.href = 'mm.html';
+        });
+        map.on('mousemove', function (e) {       // This is the main event listner which is triggered when the mouse moves
+            var nn = map.queryRenderedFeatures(e.point, {   // This queries whether the mouse is over an object in the LocalAuthorities layer
+                layers: ['LocalAuthorities']
+            });
 
 
-        
+            if (nn.length == 1) {   // This if statement is run when the mouse is over a local authority
+
+                map.setFilter('lahighlight', ['==', 'wd11nm', nn[0].properties.wd11nm]);  // Filter the highlight layer to show the local authority outline
+                console.log(nn[0].properties.wd11nm);
+
+                console.log(nn);
+
+            } else {
+                map.setFilter('lahighlight', ['==', 'wd11nm', 'null']);
+                console.log('No features');
+
+            }
+
+
+        });
+        // 获取悬浮框和图标元素
+        var floatingBox = document.getElementById('floatingBox');
+        var icon = document.getElementById('icon');
+
+        // 获取关闭按钮元素
+        var closeButton = document.getElementById('closeButton');
+
+        // 关闭按钮点击事件
+        closeButton.addEventListener('click', function () {
+            floatingBox.style.display = 'none';
+            icon.style.display = 'block';
+        });
+
+        // 图标点击事件
+        icon.addEventListener('click', function () {
+            floatingBox.style.display = 'block';
+            icon.style.display = 'none';
+        });
+
+
+
     </script>
 
 </body>
