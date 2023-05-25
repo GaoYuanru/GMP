@@ -12,14 +12,28 @@
       <select id="coordinateSelect">
         <option value="">Select a coordinate</option>
         <option value="-2.2981,53.4719,220">Manchester Media City</option>
-        <option value="-2.26843,53.45789,87">Clifford</option>
+        <option value="-2.26843,53.45789,220">Clifford</option>
+        <option value="-2.29115,53.44986,220">Longford</option>
+        <option value="-2.21212,53.46651,220">Ardwick</option>
+        <option value="-2.24075,53.49981,220">Cheetham</option>
+        <option value="-2.24928,53.47685,220">Deansgate</option>
+        <option value="-2.24546,53.46678,220">Hulme</option>
+        <option value="-2.23047,53.47869,220">Piccadilly</option>
+        <option value="-2.25555,53.4862,220">Blackfriars & Trinity</option>
+        <option value="-2.25844,53.49849,220">Broughton</option>
+        <option value="-2.27285,53.47675,220">Ordsall</option>
+        <option value="-2.29325,53.47304,220">Quays</option>
+        <option value="-2.30787,53.46549,220">Gorse Hill</option>
+        <option value="-2.28323,53.49027,220">Pendleton & Charlestown</option>
+        <option value="-2.31011,53.48278,220">Weaste & Seedley</option>
+
+        
         <!-- Add more options for other coordinates -->
       </select>
       <button onclick="flyToSelectedCoordinate()">Go to Coordinate</button>
       <button onclick="startAutoRotate()">Start Auto Rotate</button>
       <button onclick="stopAutoRotate()">Stop Auto Rotate</button>
       <button onclick="startMarkerMode()">Add Marker</button>
-      <button onclick="rotateAroundMarker()">Rotate Around Marker</button>
       <button onclick="drawPolygon()">Drawing</button>
     </div>
   </div>
@@ -44,6 +58,12 @@
         showCreditsOnScreen: true,
       })
     );
+
+    var infobox = new Cesium.Entity({
+      name: "Infobox",
+      description: ""
+    });
+    viewer.selectedEntity = infobox;
 
     var polygonEntity;
 
@@ -157,7 +177,61 @@
           roll: Cesium.Math.toRadians(0)
         }
       });
+
+      if (select.selectedIndex !== 0) {
+      var selectedOption = select.options[select.selectedIndex];
+      var selectedText = selectedOption.text;
+
+      if (selectedText === "Clifford") {
+        infobox.description = "Clifford is an electoral ward of Trafford, Greater Manchester, covering most of the Old Trafford area of Stretford. It is the north-easternmost ward of Trafford and is bordered to the west by the Longford and Gorse Hill wards.";
+      } else if (selectedText === "Longford") {
+        infobox.description = "Longford is an electoral ward of Trafford, Greater Manchester, covering the Firswood area of Stretford and a small part of the Old Trafford area. It is bordered by the Clifford ward to the northeast, the Gorse Hill ward to the northwest, the Stretford ward to the southwest and Priory to the south.";
+      } 
+      else if (selectedText === "Ardwick") {
+        infobox.description = "Ardwick is a district of Manchester in North West England, one mile south east of the city centre. The population of the Ardwick Ward at the 2011 census was 19,250.";
+      } 
+      else if (selectedText === "Cheetham") {
+        infobox.description = "Cheetham is an inner-city area and electoral ward of Manchester, England, which in 2011 had a population of 22,562.";
+      } 
+      else if (selectedText === "Deansgate") {
+        infobox.description = "Deansgate is a main road (part of the A56) through Manchester City Centre, England. It runs roughly north–south in a near straight route through the western part of the city centre and is the longest road in the city centre at over one mile in length.";
+      } 
+      else if (selectedText === "Hulme") {
+        infobox.description = "Hulme is an inner city area and electoral ward of Manchester, England, immediately south of Manchester city centre. It has a significant industrial heritage.";
+      } 
+      else if (selectedText === "Piccadilly") {
+        infobox.description = "Piccadilly is the busiest station in the Manchester station group with over 30 million passenger entries and exits between April 2019 and March 2020 (the other major stations in Manchester are Oxford Road and Victoria. ";
+      } 
+      else if (selectedText === "Blackfriars & Trinity") {
+        infobox.description = "Blackfriars and Trinity is an electoral ward of Salford, England created by the Local Government Boundary Commission for England (LGBCE). The first councillors for the ward were elected at the 2021 local elections.";
+      } 
+      else if (selectedText === "Broughton") {
+        infobox.description = "Broughton is a suburb and district of Salford, Greater Manchester, England. Located on the east bank of the River Irwell, it is 1 mile (1.6 km) northwest of Manchester and 2 miles (3.2 km) south of Prestwich. ";
+      } 
+      else if (selectedText === "Ordsall") {
+        infobox.description = "Ordsall is an inner city suburb of Salford, Greater Manchester, England. The population at the 2011 census was 14,194. It lies chiefly to the south of the A57 road, close to the River Irwell, the main boundary with the city of Manchester, Salford Quays and Manchester Ship Canal, which divides it from Stretford.";
+      } 
+      else if (selectedText === "Quays") {
+        infobox.description = "The Quays is Greater Manchester's unique waterfront destination, situated just 15 minutes by tram from Manchester city centre and an ideal destination for a day out or weekend break.";
+      } 
+      else if (selectedText === "Gorse Hill") {
+        infobox.description = "Gorse Hill is an area of Stretford, Greater Manchester, England. The population at the 2011 census was 11,894. It is a residential area with two minor industrial estates on either side of the main A56 Chester Road, which divides the two halves of the ward. ";
+      } 
+      else if (selectedText === "Pendleton & Charlestown") {
+        infobox.description = "The Quays, Ordsall, Pendleton and Charlestown area forms the southern most part of Salford's inner city bounded by the Manchester Ship Canal on two sides. It incorporates Salford Quays and contains good quality housing and leisure developments. ";
+      }  
+      else if (selectedText === "Weaste & Seedley") {
+        infobox.description = "Weaste (/wiːst/) is a inner-city suburb of Salford, Greater Manchester, England. In 2014, Weaste and Seedley ward had a population of 12,616. ";
+  
+      }
+      else if (selectedText === "Manchester Media City") {
+        infobox.description = "MediaCityUK is a 200-acre (81 ha) mixed-use property development on the banks of the Manchester Ship Canal in Salford, Greater Manchester, England. The project was developed by Peel Media; its principal tenants are media organisations and the Quayside MediaCityUK shopping centre.[1] The land occupied by the development was part of the Port of Manchester and Manchester Docks. ";
+  
+      }
+    } else {
+      infobox.description = "";
     }
+  }
 
     var rotateInterval;
 
