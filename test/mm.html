@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .map-container {
+            flex: 1;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            position: relative;
+    width: 50%;
+    float: left;
+        }
+
+        .map {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+        }
+        
+
+
+
+.map-container::before {
+  content: "";
+  width: 2px;
+  background-color: #000;
+  margin: 0 10px;
+}
+
+.map {
+    height: 400px;
+}
+
+.map-legend {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+.map-legend h3 {
+    margin-top: 0;
+}
+
+.map-legend ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.map-legend li {
+    margin-bottom: 5px;
+}
+.h2 {
+            width: 300px;
+            line-height: 24px;
+            display: block;
+            margin: 0 0 10px;
+        }
+
+        /* New styles for the container of h2 */
+        .h2-container {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        .h2 {
+  width: 300px;
+  line-height: 24px;
+  display: block;
+  margin: 0;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+/* New styles for the container of h2 */
+.h2-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.pulse:hover,
+        .pulse:focus {
+            animation: pulse 1s;
+            box-shadow: 0 0 0 2em transparent;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 var(--hover);
+            }
+        }
+
+
+        .pulse {
+            --color: rgb(52, 230, 183);
+            --hover: #b9f3d8;
+        }
+
+        button {
+            color: #0b5327;
+            /* 设置文字颜色为黑色 */
+            transition: 0.25s;
+        }
+
+        button:hover,
+        button:focus {
+            border-color: var(--hover);
+            color: #fff;
+        }
+
+        button {
+            background: none;
+            border: 2px solid;
+            font: inherit;
+            line-height: 1;
+            margin: 0.5em;
+            padding: 1em 2em;
+
+        }
+
+        #floatingBox {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            background-color: #b0f2f7;
+            width: 200px;
+            padding: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            opacity: 0.5;
+            /* 设置透明度为60% */
+        }
+
+        #content {
+            display: block;
+        }
+
+        #icon {
+            display: none;
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+
+        #closeButton {
+            margin-top: 10px;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body> 
+    
+    <div class="map-container">
+        <div id="mapLegend1" class="map-legend">
+            <h3>Legend</h3>
+            <ul>
+                <li><span class="legend-color" style="background-color: #F7FEAE;"></span> 68105 - 109272</li>
+                <li><span class="legend-color" style="background-color: #B8E6A5;"></span> 109273 - 150439 </li>
+                <li><span class="legend-color" style="background-color: #7BCBA2;"></span> 150440, 191606</li>
+                <li><span class="legend-color" style="background-color: #45AEA0;"></span> 191607, 232774</li>
+                <li><span class="legend-color" style="background-color: #069099;"></span> 232775, 273942</li>
+                <li><span class="legend-color" style="background-color: #01718B;"></span> 273943, 315112</li>
+            </ul>
+        </div>
+        <div class="h2-container">
+            <h2 id="namenn">Housing Price Yearly Comparing in Manchester city Centre
+                </br>(Data Source: <a href="https://www.manchester.gov.uk/info/200088/statistics_and_intelligence/7611/intelligence_hub">Manchester City Council</a>)
+            </h2>
+            <button class="pulse" id="timeseriescharts">Timeseries</button><button class="pulse"
+        id="housingpricecompare">Yearly Compring</button>
+        </div>
+        <div id="map1" class="map"></div>
+        <div id="mapSelection1">
+            <label for="mapSelection">Select Year:</label>
+            <select id="mapSelection">
+                <option value="map2007">Map 2007</option>
+                <option value="map2008">Map 2008</option>
+                <option value="map2009">Map 2009</option>
+                <option value="map2010">Map 2010</option>
+                <option value="map2011">Map 2011</option>
+                <option value="map2012">Map 2012</option>
+                <option value="map2013">Map 2013</option>
+                <option value="map2014">Map 2014</option>
+                <option value="map2015">Map 2015</option>
+                <option value="map2016">Map 2016</option>
+                <option value="map2017">Map 2017</option>
+                <option value="map2018">Map 2018</option>
+
+            </select>
+        </div>
+    </div>
+
+    <div class="map-container">
+        <div id="mapLegend2" class="map-legend">
+            <h3>Legend</h3>
+            <ul>
+                <li><span class="legend-color" style="background-color: #F7FEAE;"></span> 68105 - 109272</li>
+                <li><span class="legend-color" style="background-color: #B8E6A5;"></span> 109273 - 150439 </li>
+                <li><span class="legend-color" style="background-color: #7BCBA2;"></span> 150440, 191606</li>
+                <li><span class="legend-color" style="background-color: #45AEA0;"></span> 191607, 232774</li>
+                <li><span class="legend-color" style="background-color: #069099;"></span> 232775, 273942</li>
+                <li><span class="legend-color" style="background-color: #01718B;"></span> 273943, 315112</li>
+            </ul>
+        </div>
+        <div id="map2" class="map"></div>
+        <div id="mapSelection2">
+            <label for="mapSelection">Select Year:</label>
+            <select id="mapSelection">
+                <option value="map2007">Map 2007</option>
+                <option value="map2008">Map 2008</option>
+                <option value="map2009">Map 2009</option>
+                <option value="map2010">Map 2010</option>
+                <option value="map2011">Map 2011</option>
+                <option value="map2012">Map 2012</option>
+                <option value="map2013">Map 2013</option>
+                <option value="map2014">Map 2014</option>
+                <option value="map2015">Map 2015</option>
+                <option value="map2016">Map 2016</option>
+                <option value="map2017">Map 2017</option>
+                <option value="map2018">Map 2018</option>
+            </select>
+        </div>
+        
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiZ3lyMDYxNyIsImEiOiJjbGQxbGthOHgwZHVsM29tcHhnMDZnazRjIn0.uFXNmdK5Gydwz8talIxsYw'; // Put your Mapbox Public Access token here
+
+        // Load a new map in the 'map1' HTML div
+        var map1 = new mapboxgl.Map({
+            container: 'map1', // container id
+            style: 'mapbox://styles/gyr0617/cli2m5okt02k601pgc7ri0ay7', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 10 // starting zoom
+        });
+
+        // Load a new map in the 'map2' HTML div
+        var map2 = new mapboxgl.Map({
+            container: 'map2', // container id
+            style: 'mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx', // stylesheet location
+            center: [-2.2426, 53.4808], // starting position [lng, lat]
+            zoom: 10 // starting zoom
+        });
+   
+
+
+
+
+        // Map selection event handler for map1
+        var mapSelection1 = document.getElementById('mapSelection1');
+
+        mapSelection1.addEventListener('change', function () {
+            var selectedMap = this.querySelector('select').value;
+            // Handle map selection for map1
+            // Example: Change the map style based on the selected map
+            if (selectedMap === 'map2007') {
+                map1.setStyle('mapbox://styles/gyr0617/cli2m5okt02k601pgc7ri0ay7');
+            } else if (selectedMap === 'map2008') {
+                map1.setStyle('mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx');
+            } else if (selectedMap === 'map2009') {
+                map1.setStyle("mapbox://styles/gyr0617/cli1wde7902gy01pn4ye1dfjg");
+            } else if (selectedMap === 'map2010') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2khj1302i901qu6dynauu9");
+            }
+            else if (selectedMap === 'map2011') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2kwtf700io01qu6wc2cr3k");
+            }
+            else if (selectedMap === 'map2012') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2l2d6l00kz01pn9hxd1ide");
+            }
+            else if (selectedMap === 'map2013') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2lahd602ia01qu463q029m");
+            }
+            else if (selectedMap === 'map2014') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2lgppm007901qyddkpg9bs");
+            }
+            else if (selectedMap === 'map2015') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2llmid02h101qugirbho0o");
+            }
+            else if (selectedMap === 'map2016') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2lqzgw02e101r02l2qd2gh");
+            }
+            else if (selectedMap === 'map2017') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2lw3no02gw01pr2q5t0dva");
+            }
+            else if (selectedMap === 'map2018') {
+                map1.setStyle("mapbox://styles/gyr0617/cli2m039a02jn01qyb0m60ny8");
+            }
+
+        });
+
+        // Map selection event handler for map2
+        var mapSelection2 = document.getElementById('mapSelection2');
+
+        mapSelection2.addEventListener('change', function () {
+            var selectedMap = this.querySelector('select').value;
+            // Handle map selection for map2
+            // Example: Change the map style based on the selected map
+            if (selectedMap === 'map2007') {
+                map2.setStyle('mapbox://styles/gyr0617/cli2m5okt02k601pgc7ri0ay7');
+            } else if (selectedMap === 'map2008') {
+                map2.setStyle('mapbox://styles/gyr0617/cli1vp3hf00k701pn6mlxd5jx');
+            } else if (selectedMap === 'map2009') {
+                map2.setStyle("mapbox://styles/gyr0617/cli1wde7902gy01pn4ye1dfjg");
+            } else if (selectedMap === 'map2010') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2khj1302i901qu6dynauu9");
+            }
+            else if (selectedMap === 'map2011') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2kwtf700io01qu6wc2cr3k");
+            }
+            else if (selectedMap === 'map2012') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2l2d6l00kz01pn9hxd1ide");
+            }
+            else if (selectedMap === 'map2013') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2lahd602ia01qu463q029m");
+            }
+            else if (selectedMap === 'map2014') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2lgppm007901qyddkpg9bs");
+            }
+            else if (selectedMap === 'map2015') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2llmid02h101qugirbho0o");
+            }
+            else if (selectedMap === 'map2016') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2lqzgw02e101r02l2qd2gh");
+            }
+            else if (selectedMap === 'map2017') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2lw3no02gw01pr2q5t0dva");
+            }
+            else if (selectedMap === 'map2018') {
+                map2.setStyle("mapbox://styles/gyr0617/cli2m039a02jn01qyb0m60ny8");
+            }
+
+            // Add more conditions for other maps if needed
+        });
+        var timeserieschartsButton = document.getElementById('timeseriescharts');
+        var housingpricecompareButton = document.getElementById('housingpricecompare');
+
+        timeserieschartsButton.addEventListener('click', function () {
+            window.location.href = 'Interactive_map.html';
+        });
+
+        housingpricecompareButton.addEventListener('click', function () {
+            window.location.href = 'mm.html';
+        });
+      
+
+
+
+    </script>
+</body>
+
+</html>
