@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
-    <title>Document</title>
+    <title>Housing Price Yearly Comparing in in Manchester Central Area</title>
     <style>
         body {
             height: 100%;
@@ -15,7 +15,7 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; 
         }
 
         .map-container {
@@ -187,6 +187,7 @@
 <body> 
     
     <div class="map-container">
+        
         <div id="mapLegend1" class="map-legend">
             <h3>Legend</h3>
             <ul>
@@ -198,13 +199,7 @@
                 <li><span class="legend-color" style="background-color: #01718B;"></span> 273943, 315112</li>
             </ul>
         </div>
-        <div class="h2-container">
-            <h2 id="namenn">Housing Price Yearly Comparing in in Manchester Central Area
-                </br>(Data Source: <a href="https://www.manchester.gov.uk/info/200088/statistics_and_intelligence/7611/intelligence_hub">Manchester City Council</a>)
-            </h2>
-            <button class="pulse" id="timeseriescharts">Timeseries</button><button class="pulse"
-        id="housingpricecompare">Yearly Compring</button>
-        </div>
+        
         <div id="map1" class="map"></div>
         <div id="mapSelection1">
             <label for="mapSelection">Select Year:</label>
@@ -257,7 +252,14 @@
             </select>
         </div>
         
-    </div>
+        
+    </div><div class="h2-container">
+            <h2 id="namenn">Housing Price Yearly Comparing in in Manchester Central Area
+                </br>(Data Source: <a href="https://www.manchester.gov.uk/info/200088/statistics_and_intelligence/7611/intelligence_hub">Manchester City Council</a>)
+            </h2><button class="pulse" id="timeseriescharts">Timeseries</button><button class="pulse"
+            id="housingpricecompare">Yearly Compring</button>
+            
+        </div>
 
     <script>
         mapboxgl.accessToken = 'pk.eyJ1IjoiZ3lyMDYxNyIsImEiOiJjbGQxbGthOHgwZHVsM29tcHhnMDZnazRjIn0.uFXNmdK5Gydwz8talIxsYw'; // Put your Mapbox Public Access token here
@@ -278,6 +280,12 @@
             zoom: 10 // starting zoom
         });
    
+        map1.on('load', function () {
+    // 创建缩放控件
+    var nav = new mapboxgl.NavigationControl();
+    // 添加缩放控件到地图
+    map.addControl(nav, 'top-right');
+});
 
 
 
